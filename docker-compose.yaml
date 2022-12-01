@@ -1,0 +1,17 @@
+services:
+    postgres:
+      container_name: postgres
+      image: postgres:15
+      environment:
+            - PORT=4300
+            - POSTGRES_USER=ocUser
+            - POSTGRES_PASSWORD=ocPassword
+            - POSTGRES_DB=groupomania
+            - POSTGRES_HOST=localhost   
+      ports:
+        - 5432:5432
+    redis:
+      image: redis:7
+      container_name: redis
+      ports:
+        - 6379:6379
