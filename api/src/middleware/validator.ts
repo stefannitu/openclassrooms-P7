@@ -24,7 +24,7 @@ export const registerValidation = async (
   next: NextFunction
 ) => {
   try {
-    await userSchema.validateAsync(req.body)
+    await userSchema.validateAsync(req.body, { abortEarly: false })
     next()
   } catch (error) {
     console.log(error)

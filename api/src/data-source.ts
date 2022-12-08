@@ -9,7 +9,14 @@ export const AppDataSource = new DataSource({
   ...POSTGRES_CONNECTION,
   type: 'postgres',
   synchronize: false,
-  logging: true,
+  logging: false,
+  cache: {
+    type: 'ioredis',
+    options: {
+      host: 'localhost',
+      port: 6379,
+    },
+  },
   entities: [__dirname + '/Entity/*'],
   migrations: [__dirname + '/migrations/*'],
   subscribers: [],

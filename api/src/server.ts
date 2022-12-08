@@ -50,3 +50,10 @@ app.use(AuthRoute)
     console.log(error)
   }
 })()
+
+/* // for setting var in cookie
+declare module 'express-session' {
+  interface SessionData {
+    userId: string
+  }
+} */
