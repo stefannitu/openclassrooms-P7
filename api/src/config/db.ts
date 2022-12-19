@@ -1,8 +1,7 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
-import { PostgresConnectionCredentialsOptions } from 'typeorm/driver/postgres/PostgresConnectionCredentialsOptions'
-//if .env file is not provided we are working with default values
 
+//if .env file is not provided we are working with default values
 const {
   POSTGRES_USER = 'ocUser',
   POSTGRES_PASSWORD = 'ocPassword',
@@ -11,10 +10,4 @@ const {
   POSTGRES_PORT = 5432,
 } = process.env
 
-export const POSTGRES_CONNECTION: PostgresConnectionCredentialsOptions = {
-  host: POSTGRES_HOST,
-  port: +POSTGRES_PORT,
-  username: POSTGRES_USER,
-  password: POSTGRES_PASSWORD,
-  database: POSTGRES_DB,
-}
+export const DATABASE_URL = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public`

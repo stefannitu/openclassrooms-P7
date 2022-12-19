@@ -10,7 +10,7 @@ export const SESSION_OPTIONS: SessionOptions = {
   name: SESSION_NAME,
   cookie: {
     //1 minute for testing purpose
-    maxAge: 1000 * 60,
+    maxAge: 1000 * 60 * 30,
     secure: NODE_ENV === 'production',
     sameSite: 'lax',
   },

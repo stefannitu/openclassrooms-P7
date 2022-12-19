@@ -4,13 +4,15 @@ import session from 'express-session'
 import Redis from 'ioredis'
 import connectRedis from 'connect-redis'
 
-import { AppDataSource } from './data-source'
+// import { AppDataSource } from './data-source'
 import { AuthRoute } from './routes'
 import { SERVER_OPTIONS } from './config/server'
 import { REDIS_OPTIONS } from './config/cache'
 import { SESSION_OPTIONS } from './config/session'
 
 const app = express()
+
+//instantiate prisma
 
 //session store
 const RedisStore = connectRedis(session)
@@ -25,6 +27,8 @@ app.use(express.json())
 //the line below has to be uncommented
 //      app.set('trust proxy', 1)
 
+// for setting var in cookie
+
 app.use(
   session({
     ...SESSION_OPTIONS,
@@ -38,22 +42,11 @@ app.use(AuthRoute)
 //IIFE
 ;(async () => {
   try {
-    //initialize database connection
-    await AppDataSource.initialize()
-    // run db migrations
-    await AppDataSource.runMigrations()
     //start server
     app.listen(SERVER_OPTIONS, () => {
       console.log(`Server Running `)
     })
-  } catch (error) {
-    console.log(error)
+  } catch (e) {
+    console.log(e)
   }
 })()
-
-/* // for setting var in cookie
-declare module 'express-session' {
-  interface SessionData {
-    userId: string
-  }
-} */

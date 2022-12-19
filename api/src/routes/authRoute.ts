@@ -1,7 +1,6 @@
 import { Router, Request, Response } from 'express'
 
-import { register } from '../controllers'
-import { login } from '../controllers/authCtrl'
+import { register, login } from '../controllers'
 
 import { registerValidation } from '../middleware/validator'
 

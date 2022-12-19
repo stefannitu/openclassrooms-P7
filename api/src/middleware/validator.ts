@@ -9,7 +9,7 @@ const userSchema = Joi.object({
     .email()
     .pattern(/^\w+\b@groupomania\.com\b$/)
     .required(),
-  userDisplayName: Joi.string().required(),
+  // userDisplayName: Joi.string().required(),
   //check if userPassword has minimum 5 chars and is not the same with userEmail
   userPassword: Joi.string()
     .min(5)
