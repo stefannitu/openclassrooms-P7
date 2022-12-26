@@ -1,16 +1,33 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-// import './App.css'
-import { Auth } from './components/Auth'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { Login } from './components/Login'
+import { Register } from './components/Register'
+import { AuthPage } from './pages/AuthPage'
+import { ErrorPage } from './pages/error-page'
+import { HomePage } from './pages/home-page'
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <HomePage />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: '/login',
+        element: <Login />,
+    },
+    {
+        path: '/register',
+        element: <Register />,
+    },
+])
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <div className='App w-screen h-screen'>
-      <Auth />
-    </div>
-  )
+    return (
+        <div className='App w-screen h-screen'>
+            <RouterProvider router={router} />
+        </div>
+    )
 }
 
 export default App

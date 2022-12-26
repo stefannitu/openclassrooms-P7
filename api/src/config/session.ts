@@ -5,16 +5,17 @@ const {
   SESSION_NAME = 'groupomania.sid',
   NODE_ENV = 'development',
 } = process.env
+
 export const SESSION_OPTIONS: SessionOptions = {
   secret: SESSION_SECRET,
   name: SESSION_NAME,
   cookie: {
     //1 minute for testing purpose
     maxAge: 1000 * 60 * 30,
-    secure: NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: false,
+    httpOnly: NODE_ENV == 'production',
   },
-  rolling: true,
+  rolling: false,
   resave: false,
   saveUninitialized: false,
 }
