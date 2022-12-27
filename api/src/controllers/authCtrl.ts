@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import { Prisma, PrismaClient } from '@prisma/client'
 
@@ -52,7 +52,11 @@ export const register = async (req: Request, res: Response) => {
 //LOGIN controller
 ///////
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     //check if there is a session already
 
     //basic check the body fields are not empty
@@ -75,7 +79,7 @@ export const login = async (req: Request, res: Response) => {
             //if data is correct create session object
             if (matchedPaswsord) {
                 req.session.userId = matchedUser.id
-                req.session.userEmail = matchedUser.userEmail
+                // req.session.userEmail = matchedUser.userEmail
                 res.status(200).json({ message: 'Authentication success' })
             } else {
                 res.status(400).json({
@@ -91,4 +95,18 @@ export const login = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'There was a server error' })
         console.log(error)
     }
+}
+
+export const logout = (req: Request, res: Response) => {
+    //TO DO- Check what happends if we delete cookie from redis but not from browser
+
+    //session destroy remove cookie from redis
+    //res.clearCookie remove cookie from browser
+    req.session.destroy(function (err) {
+        if (err) {
+            console.log('eroare la logout')
+            return res.status(400)
+        }
+        return res.clearCookie('groupomania.sid').send()
+    })
 }
