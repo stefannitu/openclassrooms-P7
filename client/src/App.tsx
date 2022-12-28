@@ -1,10 +1,18 @@
-import { useState } from 'react'
+import React, { createContext, useState } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Login } from './components/Login'
 import { Register } from './components/Register'
-import { AuthPage } from './pages/AuthPage'
 import { ErrorPage } from './pages/error-page'
 import { HomePage } from './pages/home-page'
+
+export type AuthContextType = {
+    isAuthenticated: boolean
+    setIsAuthenticated: (isAuthenticated: boolean) => void
+}
+export const AuthContext = createContext<AuthContextType>({
+    isAuthenticated: false,
+    setIsAuthenticated: () => {},
+})
 
 const router = createBrowserRouter([
     {
@@ -23,9 +31,14 @@ const router = createBrowserRouter([
 ])
 
 function App() {
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+
     return (
         <div className='App w-screen h-screen'>
-            <RouterProvider router={router} />
+            <AuthContext.Provider
+                value={{ isAuthenticated, setIsAuthenticated }}>
+                <RouterProvider router={router} />
+            </AuthContext.Provider>
         </div>
     )
 }

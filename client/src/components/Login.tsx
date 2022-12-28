@@ -1,27 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../App'
 
 export function Login() {
     const [userEmail, setUserEmail] = useState('')
     const [userPassword, setUserPassword] = useState('')
     const [userError, setUserError] = useState('')
     const navigate = useNavigate()
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+
+    //useRef test
+    const emailRef = useRef<HTMLInputElement>(null)
+    const passRef = useRef<HTMLInputElement>(null)
 
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
-
+        if (!emailRef.current?.value || !passRef.current?.value) {
+            return setUserError('Empty fields')
+        }
         if (
-            /^(?!\w+\b@groupomania\.com\b$)/i.test(userEmail) ||
-            userPassword.length < 6
+            /^(?!\w+\b@groupomania\.com\b$)/i.test(emailRef.current.value) ||
+            passRef.current.value.length < 6
         ) {
-            return setUserError('Please fill all the field2s')
+            return setUserError('Please check inserted data')
         }
 
-        const requestOptions = {
+        //fetch options
+        const requestOptions: RequestInit = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userEmail, userPassword }),
+            body: JSON.stringify({
+                userEmail: emailRef.current.value,
+                userPassword: passRef.current.value,
+            }),
+            credentials: 'include',
         }
+
         try {
             //send data to the server for authentication
             const userLogin = await fetch(
@@ -32,6 +46,7 @@ export function Login() {
             const loginResponse = await userLogin.json()
             setUserError(loginResponse.message)
             if (loginResponse.message == 'Authentication success') {
+                setIsAuthenticated(true)
                 navigate('/')
             }
             console.log(loginResponse)
@@ -42,7 +57,7 @@ export function Login() {
 
     //handle what is happening when an input field lose focus
     /////////////////////
-    function handleBlur(e: React.FormEvent<HTMLInputElement>) {
+    /*  function handleBlur(e: React.FormEvent<HTMLInputElement>) {
         //check field name
         if (e.currentTarget.name == 'userEmail') {
             setUserEmail(e.currentTarget.value)
@@ -50,7 +65,7 @@ export function Login() {
         if (e.currentTarget.name == 'userPassword') {
             setUserPassword(e.currentTarget.value)
         }
-    }
+    } */
 
     //JSX  start
     ///////////////
@@ -69,7 +84,8 @@ export function Login() {
                         type='email'
                         id='userEmail'
                         name='userEmail'
-                        onBlur={handleBlur}
+                        ref={emailRef}
+                        // onBlur={handleBlur}
                         required
                         autoComplete='on'
                     />
@@ -79,9 +95,10 @@ export function Login() {
                         type='password'
                         id='userPassword'
                         name='userPassword'
+                        ref={passRef}
                         minLength={6}
                         autoComplete='new-password'
-                        onBlur={handleBlur}
+                        // onBlur={handleBlur}
                         required
                     />
                     <button
@@ -90,7 +107,7 @@ export function Login() {
                         Login{' '}
                     </button>
                     <p className=' '>
-                        Not registered? <b>Sign UP</b>
+                        Not registered? <b>Register now</b>
                     </p>
                 </form>
 
