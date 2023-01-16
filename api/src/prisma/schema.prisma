@@ -1,19 +1,30 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = "postgresql://ocUser:ocPassword@localhost:5432/groupomania?schema=public"
+    provider = "postgresql"
+    url      = "postgresql://ocUser:ocPassword@localhost:5432/groupomania?schema=public"
 }
 
 model User {
-  id           String    @id @default(uuid())
-  userEmail    String    @unique
-  userPassword String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  deletedAt    DateTime?
+    id           String    @id @default(uuid())
+    userEmail    String    @unique
+    userPassword String
+    createdAt    DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+    deletedAt    DateTime?
+    messages     Message[]
 
-  @@map("user")
+    @@map("user")
+}
+
+model Message {
+    id          Int    @id @default(autoincrement())
+    postTitle   String @unique
+    postMessage String
+    author      User   @relation(fields: [userId], references: [id])
+    userId      String
+
+    @@map("message")
 }

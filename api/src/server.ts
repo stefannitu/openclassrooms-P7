@@ -4,7 +4,7 @@ import session from 'express-session'
 import Redis from 'ioredis'
 import connectRedis from 'connect-redis'
 
-import { AuthRoute } from './routes'
+import { AuthRoute, MessagesRoute, TestUserRoute } from './routes'
 import { SERVER_OPTIONS } from './config/server'
 import { REDIS_OPTIONS } from './config/cache'
 import { SESSION_OPTIONS } from './config/session'
@@ -13,7 +13,7 @@ const app = express()
 
 //session store
 const RedisStore = connectRedis(session)
-let redisClient = new Redis(REDIS_OPTIONS)
+export const redisClient = new Redis(REDIS_OPTIONS)
 
 //middlewares
 app.use(
@@ -38,6 +38,8 @@ app.use(
 )
 //routes
 app.use(AuthRoute)
+app.use(MessagesRoute)
+app.use(TestUserRoute)
 
 //IIFE
 ;(async () => {
