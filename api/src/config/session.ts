@@ -9,8 +9,7 @@ export const SESSION_OPTIONS: SessionOptions = {
     resave: false,
     saveUninitialized: false,
     cookie: {
-        //1 minute for testing purpose
-        maxAge: 1000 * 60 * 3,
+        maxAge: 1000 * 60 * 5,
         secure: false,
         httpOnly: true,
         sameSite: 'lax',

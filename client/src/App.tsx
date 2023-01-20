@@ -1,34 +1,23 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { Dashboard, Login } from './components'
-import {} from './components/loginCmp'
+import { Route, Routes } from 'react-router-dom'
+import { Dashboard, Login, ProtectedRoute, Register } from './components'
+
 import { Default } from './Layout/defaultLayout'
-
-import { New } from './components/new'
 import { AuthContextProvider } from './context/authContext'
-
-const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Default />,
-
-        children: [
-            { index: true, element: <Dashboard /> },
-
-            { path: 'login', element: <Login /> },
-        ],
-    },
-    {
-        element: <New />,
-        path: '/new',
-    },
-])
 
 function App() {
     return (
         <AuthContextProvider>
-            <div className='App w-screen h-screen'>
-                <RouterProvider router={router} />
-            </div>
+            <Routes>
+                <Route path='/' element={<ProtectedRoute />}>
+                    <Route element={<Default />}>
+                        <Route index element={<Dashboard />} />
+                    </Route>
+                </Route>
+                <Route element={<Default />}>
+                    <Route path='/login' element={<Login />} />
+                    <Route path='/register' element={<Register />} />
+                </Route>
+            </Routes>
         </AuthContextProvider>
     )
 }

@@ -1,4 +1,11 @@
+import { ListPosts } from './postListCmp'
+
+export { Login } from './login'
+export { Dashboard } from './dashboard'
 export { Footer } from './footerCmp'
 export { Header } from './headerCmp'
-export { Dashboard } from './dashboardCmp'
-export { Login } from './loginCmp'
+export { ProtectedRoute } from './protectedRoute'
+export { Register } from './registerCmp'
+export { CreatePost } from './postCreateCmp'
+export { ListPosts } from './postListCmp'
+export { PostCard } from './postCardCmp'
