@@ -25,3 +25,10 @@ export type PostCardTypes = {
 export type ChildrenAsPropType = {
     children: React.ReactNode
 }
+
+export type RegisterUserType = {
+    emailRef: string
+    passRef: string
+    firstNameRef: string
+    lastNameRef: string
+}

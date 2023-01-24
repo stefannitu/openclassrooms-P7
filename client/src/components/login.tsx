@@ -43,13 +43,12 @@ export const Login = () => {
 
     if (isAuthenticated) return <Navigate to='/' />
     return (
-        <div className=' px-12 py-8 rounded-xl bg-white border-blue-600 border-t-8 max-w-sm shadow-xl'>
+        <div className=' px-12 py-8 rounded-xl bg-white  max-w-sm shadow-xl'>
             <form className='flex flex-col gap-3 ' onSubmit={handleSubmit}>
                 <legend>
                     <h1>Login</h1>
                 </legend>
                 {formMessage ? formMessage : null}
-                {isAuthenticated ? ' true ' : ' false '}
                 <label htmlFor='userEmail'>Email</label>
                 <input
                     type='email'
