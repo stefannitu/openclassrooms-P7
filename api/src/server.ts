@@ -3,6 +3,7 @@ import cors from 'cors'
 import session from 'express-session'
 import Redis from 'ioredis'
 import connectRedis from 'connect-redis'
+import { upload } from './middleware/uploadFile'
 
 import { AuthRoute, MessagesRoute, TestUserRoute } from './routes'
 import { SERVER_OPTIONS } from './config/server'
@@ -24,6 +25,8 @@ app.use(
 )
 app.use(express.json())
 
+app.use(express.urlencoded({ extended: true }))
+
 //when in prodution behind a proxy
 //if cookie {secure:true}
 //the line below has to be uncommented
@@ -37,10 +40,12 @@ app.use(
     })
 )
 //routes
+app.post('/photo', upload.single('userAvatar'), (req, res) => {
+    res.json({ message: req.file })
+})
 app.use(AuthRoute)
 app.use(MessagesRoute)
 app.use(TestUserRoute)
-
 //IIFE
 ;(async () => {
     try {

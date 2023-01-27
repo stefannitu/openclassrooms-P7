@@ -1,7 +1,7 @@
 import { useRef, useState, useContext, useEffect } from 'react'
 import axios, { AxiosError } from 'axios'
 import { AuthContext } from '../context/authContext'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
 export const Login = () => {
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
@@ -49,21 +49,26 @@ export const Login = () => {
                     <h1>Login</h1>
                 </legend>
                 {formMessage ? formMessage : null}
-                <label htmlFor='userEmail'>Email</label>
+                <label htmlFor='userEmail' className='custom-label'>
+                    Email
+                </label>
                 <input
                     type='email'
                     id='userEmail'
                     name='userEmail'
-                    ref={emailRef}
+                    pattern='^[a-zA-Z0-9\.-]+@(\bgroupomania\.com\b)$'
                     //clear error shown error messagesif they are any
                     onClick={() => {
                         setFormMessage('')
                     }}
                     required
                     autoComplete='on'
+                    className='custom-input'
                 />
 
-                <label htmlFor='userPassword'>Password</label>
+                <label htmlFor='userPassword' className='custom-label'>
+                    Password
+                </label>
                 <input
                     type='password'
                     id='userPassword'
@@ -76,6 +81,7 @@ export const Login = () => {
                     minLength={6}
                     autoComplete='new-password'
                     required
+                    className='custom-input'
                 />
                 <button className=' bg-blue-600 text-white  font-bold w-fit px-8 py-2 rounded-md shadow-xl hover:bg-blue-500'>
                     LogIn

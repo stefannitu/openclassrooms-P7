@@ -8,14 +8,17 @@ datasource db {
 }
 
 model User {
-    id           String    @id @default(uuid())
-    userEmail    String    @unique
-    userPassword String
-    createdAt    DateTime  @default(now())
-    updatedAt    DateTime  @updatedAt
-    deletedAt    DateTime?
-    deleted      Boolean   @default(false)
-    messages     Message[]
+    id            String    @id @default(uuid())
+    userEmail     String    @unique
+    userPassword  String
+    userFirstName String
+    userLastName  String
+    userAvatar    String
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    deletedAt     DateTime?
+    deleted       Boolean   @default(false)
+    messages      Message[]
 
     @@map("user")
 }

@@ -27,8 +27,9 @@ export type ChildrenAsPropType = {
 }
 
 export type RegisterUserType = {
-    emailRef: string
-    passRef: string
-    firstNameRef: string
-    lastNameRef: string
+    userEmail: string
+    userPassword: string
+    userFirstName: string
+    userLastName: string
+    userAvatar: File | undefined
 }

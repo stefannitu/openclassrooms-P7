@@ -23,8 +23,11 @@
         @apply text-xl;
     }
    .custom-input{
-		@apply  relative p-2 rounded-md shadow-md focus:outline-none invalid:border invalid:border-red-300 invalid:text-red-700 valid:border
+		@apply  relative p-2 w-full rounded-md shadow-md focus:outline-none invalid:border invalid:border-red-300 invalid:text-red-700 valid:border
 		 valid:border-green-700 valid:shadow-md valid:shadow-green-100 valid:bg-green-50 valid:text-green-700
 		 focus:invalid:border focus:invalid:border-red-300 focus:invalid:shadow-md focus:invalid:shadow-red-100 focus:invalid:bg-red-50 focus:invalid:text-red-700 
+   }
+   .custom-label{
+	@apply after:content-['*'] after:text-base after:text-red-700 font-medium mt-4 mb-1
    }
 }
