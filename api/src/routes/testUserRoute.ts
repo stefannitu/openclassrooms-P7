@@ -4,6 +4,6 @@ import { userHasCookie } from '../controllers/testUserCtrl'
 
 const router = Router()
 
-router.get('/api/testUser', userHasCookie)
+router.get('/api/testuser', userHasCookie)
 
 export default router

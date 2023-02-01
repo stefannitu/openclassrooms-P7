@@ -3,6 +3,7 @@ import React from 'react'
 export type AuthContextType = {
     isAuthenticated: boolean
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
+    login: () => void
 }
 
 export type UserType = {

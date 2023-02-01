@@ -1,43 +1,38 @@
 import { useRef, useState, useContext, useEffect } from 'react'
-import axios, { AxiosError } from 'axios'
 import { AuthContext } from '../context/authContext'
-import { Link, Navigate } from 'react-router-dom'
-import { axiosInstance } from '../config/axiosConf'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { AxiosError } from 'axios'
 
 export const Login = () => {
-    const { isAuthenticated, setIsAuthenticated, dbUser, setDbUser } =
+    const navigate = useNavigate()
+    const { isAuthenticated, setIsAuthenticated, login } =
         useContext(AuthContext)
-    const [userLoginMessage, setUserLoginMessage] = useState('')
     const [revealPass, setRevealPass] = useState(false)
+    const [errMessage, setErrMessage] = useState('')
 
     const emailRef = useRef<HTMLInputElement>(null)
     const passRef = useRef<HTMLInputElement>(null)
 
     const handleSubmit = async (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault()
-
         try {
-            const matchedUser = await axiosInstance.post('/auth/login', {
-                userEmail: emailRef.current!.value,
-                userPassword: passRef.current!.value,
-            })
-
-            //
+            await login(emailRef.current!.value, passRef.current!.value)
+            navigate('/')
         } catch (error) {
             if (error instanceof AxiosError) {
-                return setUserLoginMessage(error!.response!.data.message)
+                return setErrMessage(error.response!.data.message)
             }
-            return setUserLoginMessage('Server error please try again!')
+            console.log(error)
         }
-
         // context to keep the user authenticated across the application
-        setIsAuthenticated(true)
     }
 
     return isAuthenticated ? (
         <Navigate to='/' />
     ) : (
         <div className='h-screen bg-cyan-400 flex flex-col justify-center items-center gap-5'>
+            {errMessage ? errMessage : null}
+
             <form
                 className='flex flex-col  p-5 bg-white rounded-lg shadow-lg'
                 onSubmit={handleSubmit}>
