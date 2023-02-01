@@ -1,11 +1,8 @@
 import { ListPosts } from './postListCmp'
 
-export { Login } from './login'
-export { Dashboard } from './dashboard'
 export { Footer } from './footerCmp'
-export { Header } from './headerCmp'
+export { Header } from './header'
 export { ProtectedRoute } from './protectedRoute'
-export { Register } from './register'
 export { CreatePost } from './postCreateCmp'
 export { ListPosts } from './postListCmp'
 export { PostCard } from './postCardCmp'

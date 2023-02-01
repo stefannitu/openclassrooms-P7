@@ -1,19 +1,18 @@
 import axios from 'axios'
 import React, { useRef, useState, useContext } from 'react'
+import { AuthContext } from '../context/authContext'
 import { LoadingContext } from '../context/loadingContext'
 
 export const CreatePost = () => {
-    const titleRef = useRef<HTMLInputElement>(null)
-    const messageRef = useRef<HTMLTextAreaElement>(null)
+    const messageRef = useRef<HTMLInputElement>(null)
     const [errorMessage, setErrorMessage] = useState('')
     const { setIsLoading } = useContext(LoadingContext)
+    const { dbUser } = useContext(AuthContext)
 
-    const handleClick = async (e: React.MouseEvent) => {
+    const onSubmitHandler = async (e: React.FormEvent) => {
         e.preventDefault()
         setErrorMessage('')
-        if (!titleRef.current?.value || !messageRef.current?.value) {
-            return setErrorMessage('Please fill all fields')
-        }
+
         try {
             const createMessage = await axios(
                 'http://localhost:4300/api/message/post',
@@ -21,15 +20,13 @@ export const CreatePost = () => {
                     method: 'post',
                     withCredentials: true,
                     data: {
-                        postTitle: titleRef.current?.value,
                         postMessage: messageRef.current?.value,
                     },
                 }
             )
             setErrorMessage(createMessage.data.message)
             setIsLoading(true)
-            titleRef.current.value = ''
-            messageRef.current.value = ''
+            messageRef.current!.value = ''
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
                 console.log(error.response?.data.message)
@@ -42,31 +39,39 @@ export const CreatePost = () => {
     }
 
     return (
-        <div className=' max-w-xl border py-4 px-8 rounded-xl bg-white shadow-lg '>
-            <form className='flex flex-col gap-1'>
-                {errorMessage ? errorMessage : null}
-                {/* <label htmlFor='postTitle'></label> */}
+        <div className='bg-white px-6 py-6 rounded-lg shadow-xl shadow-purple-200 min-w-[700px]'>
+            <div className='flex items-center gap-4 mb-8'>
+                <img
+                    src={`http://localhost:4300/${dbUser.userAvatar}`}
+                    className='w-24 h-24 rounded-full object-cover'
+                />
+                <p className=' text-gray-500'>
+                    What's on your mind {dbUser.userFirstName}
+                </p>
+            </div>
+            <form className='flex flex-col gap-4' onSubmit={onSubmitHandler}>
                 <input
                     type='text'
-                    name=''
-                    id='postTitle'
-                    ref={titleRef}
-                    //TO DO
-                    //remove apply style from inputcss
-                    //clean classes
-                />
-                <label htmlFor='postMessage'></label>
-                <textarea
-                    name=''
-                    id='postMessage'
-                    cols={50}
-                    rows={6}
+                    className=' border-b-2 border-purple-300 focus:outline-none font-normal px-6 pt-3 rounded-t-md hover:border-purple-500 hover:bg-purple-50'
+                    autoFocus
                     ref={messageRef}
-                    className='shadow-lg border rounded-md hover:border-blue-400'></textarea>
+                />
+                <label className='block'>
+                    <span className='sr-only'>Choose profile photo</span>
+                    <input
+                        type='file'
+                        className='block w-full text-sm text-slate-500
+      						file:mr-4 file:py-2 file:px-4
+      						file:rounded-full file:border-0
+      						file:text-sm file:font-semibold
+      					  file:bg-violet-50 file:text-violet-700
+      					  hover:file:bg-violet-100'
+                    />
+                </label>
                 <button
-                    className='px-5 py-3 border rounded-lg shadow-lg hover:shadow-md '
-                    onClick={handleClick}>
-                    CREATE POST
+                    type='submit'
+                    className='group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-2 shadow-md'>
+                    Post
                 </button>
             </form>
         </div>

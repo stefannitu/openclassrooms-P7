@@ -1,18 +1,17 @@
 import { Request, Response } from 'express'
-import { Prisma, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 
 const prisma = new PrismaClient()
 
 export const savePost = async (req: Request, res: Response) => {
     const { postTitle, postMessage } = req.body
-    if (!postTitle || !postMessage || !req.session.userId) {
+    if (!postMessage || !req.session.userId) {
         return res.status(400).json('Empty fields')
     }
     try {
         await prisma.message.create({
             data: {
-                postTitle,
                 postMessage,
                 ownerId: req.session.userId,
             },

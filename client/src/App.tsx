@@ -1,24 +1,44 @@
-import { Route, Routes } from 'react-router-dom'
-import { Dashboard, Login, ProtectedRoute, Register } from './components'
+import {
+    createBrowserRouter,
+    Route,
+    RouterProvider,
+    Routes,
+} from 'react-router-dom'
+import { ProtectedRoute } from './components'
+import { Home, Login, Register } from './pages'
 
 import { Default } from './Layout/defaultLayout'
-import { AuthContextProvider } from './context/authContext'
 
 function App() {
+    const router = createBrowserRouter([
+        {
+            path: '/login',
+            element: <Login />,
+        },
+        {
+            path: '/register',
+            element: <Register />,
+        },
+        {
+            path: '/',
+            element: (
+                <ProtectedRoute>
+                    <Default />
+                </ProtectedRoute>
+            ),
+            children: [
+                {
+                    path: '/',
+                    element: <Home />,
+                },
+            ],
+        },
+    ])
+
     return (
-        <AuthContextProvider>
-            <Routes>
-                <Route path='/' element={<ProtectedRoute />}>
-                    <Route element={<Default />}>
-                        <Route index element={<Dashboard />} />
-                    </Route>
-                </Route>
-                <Route element={<Default />}>
-                    <Route path='/login' element={<Login />} />
-                    <Route path='/register' element={<Register />} />
-                </Route>
-            </Routes>
-        </AuthContextProvider>
+        <>
+            <RouterProvider router={router} />
+        </>
     )
 }
 

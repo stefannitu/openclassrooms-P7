@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState, useContext } from 'react'
 import { PostCard } from './index'
-import { PostCardTypes } from '../types'
+import { LoadingContextType, PostCardTypes } from '../types'
 import { LoadingContext } from '../context/loadingContext'
 
 export const ListPosts = () => {
@@ -19,7 +19,6 @@ export const ListPosts = () => {
                     }
                 )
                 setPosts(response.data)
-                console.log(response.data)
 
                 setIsLoading(false)
             } catch (error) {
@@ -35,6 +34,7 @@ export const ListPosts = () => {
         <div className=' w-full'>
             <ul>
                 {posts
+                    //create card for each post and sort after date
                     .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
                     .map((item) => {
                         return (

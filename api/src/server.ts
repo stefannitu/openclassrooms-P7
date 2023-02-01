@@ -27,6 +27,8 @@ app.use(express.json())
 
 app.use(express.urlencoded({ extended: true }))
 
+app.use(express.static('upl'))
+
 //when in prodution behind a proxy
 //if cookie {secure:true}
 //the line below has to be uncommented
@@ -40,9 +42,7 @@ app.use(
     })
 )
 //routes
-app.post('/photo', upload.single('userAvatar'), (req, res) => {
-    res.json({ message: req.file })
-})
+
 app.use(AuthRoute)
 app.use(MessagesRoute)
 app.use(TestUserRoute)

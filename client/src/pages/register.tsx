@@ -1,7 +1,6 @@
 import React, { useContext, useRef, useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { AuthContext } from '../context/authContext'
-import { RegisterUserType } from '../types'
 import axios, { AxiosError } from 'axios'
 
 export const Register = () => {
@@ -58,22 +57,10 @@ export const Register = () => {
             setUserRegisterMessage('There is a server error please try again')
         }
     }
+    if (isAuthenticated) return <Navigate to='/' />
 
-    /*   //set formData for text input fields
-    const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
-        formdata.set(e.target.name, e.target.value)
-    }
-    //set formData for "input file"
-    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files
-        if (!file) return console.log('no file')
-        formdata.set('userAvatar', file![0])
-    } */
-
-    return isAuthenticated ? (
-        <Navigate to='/' />
-    ) : (
-        <div>
+    return (
+        <div className='h-screen bg-cyan-400 flex flex-col justify-center items-center gap-5'>
             {userRegisterMessage ? userRegisterMessage : null}
             <form
                 encType='multipart/form-data'
@@ -97,7 +84,6 @@ export const Register = () => {
                     required
                     className='custom-input'
                     ref={refUserFirstName}
-                    // onBlur={onBlurHandler}
                 />
                 <label htmlFor='userLastName' className='custom-label'>
                     Last Name
@@ -111,7 +97,6 @@ export const Register = () => {
                     required
                     className='custom-input'
                     ref={refUserLastName}
-                    // onBlur={onBlurHandler}
                 />
 
                 <label htmlFor='userEmail' className='custom-label'>
@@ -126,23 +111,25 @@ export const Register = () => {
                     className='custom-input'
                     aria-describedby='emailDesc'
                     ref={refUserEmail}
-                    // onBlur={onBlurHandler}
-                />
-
-                <input
-                    type='file'
-                    accept='image/png, image/jpeg'
-                    id='userAvatar'
-                    name='userAvatar'
-                    // onBlur={onChangeHandler}
-                    ref={refUserAvatar}
-                    required
                 />
                 <span
                     id='emailDesc'
                     className=' text-sm text-indigo-600 font-medium'>
                     Email domain should belong to "@groupomania.com"
                 </span>
+                <label htmlFor='userAvatar' className='custom-label'>
+                    Your Avatar
+                </label>
+                <input
+                    type='file'
+                    accept='image/png, image/jpeg'
+                    id='userAvatar'
+                    name='userAvatar'
+                    ref={refUserAvatar}
+                    required
+                    className='mt-4'
+                    // value='Avatar'
+                />
 
                 <label htmlFor='userPassword' className='custom-label'>
                     Password
@@ -158,7 +145,6 @@ export const Register = () => {
                         className='custom-input'
                         aria-describedby='passDesc'
                         ref={refUserPassword}
-                        // onBlur={onBlurHandler}
                     />
                     <span
                         className='absolute top-2 right-3 cursor-pointer font-medium text-indigo-800'
@@ -193,6 +179,12 @@ export const Register = () => {
                     Register
                 </button>
             </form>
+            <p className='mt-4'>
+                Already have a user?{' '}
+                <Link to='/login'>
+                    <b>Go to Login</b>
+                </Link>
+            </p>
         </div>
     )
 }

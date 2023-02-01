@@ -1,3 +1,6 @@
+//
+//  this context is used for updating post list after each new/modified post
+
 import React, { createContext, useState } from 'react'
 import { LoadingContextType, ChildrenAsPropType } from '../types'
 

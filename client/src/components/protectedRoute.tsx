@@ -1,16 +1,16 @@
+import { useContext, useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import { AuthContext } from '../context/authContext'
-import { useContext } from 'react'
 import { LoadingContextProvider } from '../context/loadingContext'
+import { hashQueryKey, useQuery } from '@tanstack/react-query'
+import { fetchAuthStatus } from '../fetch/fetchers'
+import { ChildrenAsPropType } from '../types'
 
-export const ProtectedRoute = () => {
-    const { isAuthenticated } = useContext(AuthContext)
+export const ProtectedRoute = ({ children }: ChildrenAsPropType) => {
+    // const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+    const isAuthenticated = true
 
-    return !isAuthenticated ? (
-        <Navigate to='/login' />
-    ) : (
-        <LoadingContextProvider>
-            <Outlet />
-        </LoadingContextProvider>
-    )
+    if (!isAuthenticated) return <Navigate to='/login' />
+
+    return children
 }

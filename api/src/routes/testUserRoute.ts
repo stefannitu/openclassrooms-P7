@@ -1,9 +1,9 @@
 import Router from 'express'
 
-import { testUser } from '../controllers/testUserCtrl'
+import { userHasCookie } from '../controllers/testUserCtrl'
 
 const router = Router()
 
-router.get('/api/testUser', testUser)
+router.get('/api/testUser', userHasCookie)
 
 export default router

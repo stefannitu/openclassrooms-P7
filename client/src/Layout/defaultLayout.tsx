@@ -8,7 +8,6 @@ export const Default = (): JSX.Element => {
             <main className='grid place-items-center bg-gray-50 w-full h-full px-8'>
                 <Outlet />
             </main>
-            <Footer />
         </div>
     )
 }

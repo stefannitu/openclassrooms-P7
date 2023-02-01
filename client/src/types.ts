@@ -5,6 +5,14 @@ export type AuthContextType = {
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+export type UserType = {
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userId: string
+    userAvatar: string
+}
+
 export type LoadingContextType = {
     isLoading: boolean
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -23,7 +31,7 @@ export type PostCardTypes = {
 }
 
 export type ChildrenAsPropType = {
-    children: React.ReactNode
+    children: JSX.Element
 }
 
 export type RegisterUserType = {
