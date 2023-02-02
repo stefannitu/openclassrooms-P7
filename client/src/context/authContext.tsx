@@ -5,7 +5,8 @@ import { AxiosError } from 'axios'
 
 export const AuthContext = createContext<AuthContextType>({
     isAuthenticated: false,
-    setIsAuthenticated: () => {},
+    setIsAuthenticated: (isAuthenticated: boolean) => {},
+
     login: () => {},
     revalidateUser: () => {},
     currentUser: {} as UserType | null,
