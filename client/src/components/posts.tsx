@@ -4,7 +4,7 @@ import { PostCard } from './index'
 import { LoadingContextType, PostCardTypes } from '../types'
 import { LoadingContext } from '../context/loadingContext'
 
-export const ListPosts = () => {
+export const Posts = () => {
     const [posts, setPosts] = useState<PostCardTypes[]>([])
     const { isLoading, setIsLoading } = useContext(LoadingContext)
 

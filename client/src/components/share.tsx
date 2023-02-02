@@ -1,13 +1,11 @@
 import axios from 'axios'
 import React, { useRef, useState, useContext } from 'react'
 import { AuthContext } from '../context/authContext'
-import { LoadingContext } from '../context/loadingContext'
 
-export const CreatePost = () => {
+export const Share = () => {
     const messageRef = useRef<HTMLInputElement>(null)
     const [errorMessage, setErrorMessage] = useState('')
-    const { setIsLoading } = useContext(LoadingContext)
-    const { dbUser } = useContext(AuthContext)
+    const { currentUser } = useContext(AuthContext)
 
     const onSubmitHandler = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -25,7 +23,6 @@ export const CreatePost = () => {
                 }
             )
             setErrorMessage(createMessage.data.message)
-            setIsLoading(true)
             messageRef.current!.value = ''
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
@@ -42,11 +39,11 @@ export const CreatePost = () => {
         <div className='bg-white px-6 py-6 rounded-lg shadow-xl shadow-purple-200 min-w-[700px]'>
             <div className='flex items-center gap-4 mb-8'>
                 <img
-                    src={`http://localhost:4300/${dbUser.userAvatar}`}
+                    src={`http://localhost:4300/${currentUser!.userAvatar}`}
                     className='w-24 h-24 rounded-full object-cover'
                 />
                 <p className=' text-gray-500'>
-                    What's on your mind {dbUser.userFirstName}
+                    What's on your mind {currentUser!.userFirstName}
                 </p>
             </div>
             <form className='flex flex-col gap-4' onSubmit={onSubmitHandler}>

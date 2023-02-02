@@ -9,8 +9,7 @@ import { any } from 'zod'
 import { axiosInstance } from '../config/axiosConf'
 
 export const ProtectedRoute = ({ children }: ChildrenAsPropType) => {
-    const { isAuthenticated, setIsAuthenticated, revalidateUser } =
-        useContext(AuthContext)
+    const { isAuthenticated, revalidateUser } = useContext(AuthContext)
     useEffect(() => {
         const test = async () => {
             try {

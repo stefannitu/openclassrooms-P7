@@ -3,8 +3,6 @@ import bcrypt from 'bcrypt'
 import { Prisma, PrismaClient } from '@prisma/client'
 
 import { RegisterUserType } from '../types'
-import { match } from 'assert'
-import { StringRegexOptions } from 'joi'
 
 //for SessionData
 declare module 'express-session' {
@@ -43,11 +41,6 @@ export const register = async (req: Request, res: Response) => {
                 userFirstName: userFirstName.toLowerCase().trim(),
                 userLastName: userLastName.toLowerCase().trim(),
                 userAvatar: req.file!.filename,
-            },
-            select: {
-                userFirstName: true,
-                userEmail: true,
-                userLastName: true,
             },
         })
         //log testsreq.body
@@ -119,10 +112,7 @@ export const login = async (
                 req.session.userLastName = matchedUser.userLastName
                 req.session.userAvatar = matchedUser.userAvatar
 
-                res.status(200).json({
-                    message: 'User authenticated',
-                    user: matchedUser,
-                })
+                res.status(200).json(matchedUser)
             } else {
                 res.status(401).json({
                     message: 'User/password incorrect combination.',

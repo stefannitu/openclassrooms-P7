@@ -3,18 +3,17 @@ import { AuthContextType, ChildrenAsPropType, UserType } from '../types'
 import { axiosInstance } from '../config/axiosConf'
 import { AxiosError } from 'axios'
 
-export const AuthContext = createContext({
+export const AuthContext = createContext<AuthContextType>({
     isAuthenticated: false,
-    setIsAuthenticated: (isAuthenticated: boolean) => {},
-    login: (userEmail: string, userPassword: string) => {},
+    setIsAuthenticated: () => {},
+    login: () => {},
     revalidateUser: () => {},
-    // currentUser: {},
-    // setCurrentUser: (currentUser: {}) => {},
+    currentUser: {} as UserType | null,
 })
 
 export const AuthContextProvider = ({ children }: ChildrenAsPropType) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
-    //const [currentUser, setCurrentUser] = useState<UserType>({} as UserType)
+    const [currentUser, setCurrentUser] = useState<UserType | null>(null)
 
     const login = async (userEmail: string, userPassword: string) => {
         const matchedUser = await axiosInstance.post('/auth/login', {
@@ -22,26 +21,30 @@ export const AuthContextProvider = ({ children }: ChildrenAsPropType) => {
             userPassword: userPassword,
         })
 
-        /* setCurrentUser({
-            userId: matchedUser.data.user.id,
-            userEmail: matchedUser.data.user.email,
-        }) */
-        console.log(matchedUser.data.user)
+        setCurrentUser({
+            userId: matchedUser.data.id,
+            userEmail: matchedUser.data.userEmail,
+            userFirstName: matchedUser.data.userFirstName,
+            userLastName: matchedUser.data.userLastName,
+            userAvatar: matchedUser.data.userAvatar,
+        })
 
         setIsAuthenticated(true)
     }
 
     const revalidateUser = async () => {
-        await axiosInstance.get('/testuser')
+        const user = await axiosInstance.get('/testuser')
+        setCurrentUser(user.data)
         setIsAuthenticated(true)
     }
     return (
         <AuthContext.Provider
             value={{
                 isAuthenticated,
-                setIsAuthenticated,
                 login,
                 revalidateUser,
+                currentUser,
+                setIsAuthenticated,
             }}>
             {children}
         </AuthContext.Provider>

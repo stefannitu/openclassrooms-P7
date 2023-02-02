@@ -5,8 +5,7 @@ import { AxiosError } from 'axios'
 
 export const Login = () => {
     const navigate = useNavigate()
-    const { isAuthenticated, setIsAuthenticated, login } =
-        useContext(AuthContext)
+    const { isAuthenticated, login } = useContext(AuthContext)
     const [revealPass, setRevealPass] = useState(false)
     const [errMessage, setErrMessage] = useState('')
 
