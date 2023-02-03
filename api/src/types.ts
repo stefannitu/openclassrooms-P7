@@ -1,7 +1,7 @@
 export type RegisterUserType = {
-    userEmail: string
-    userPassword: string
-    userFirstName: string
-    userLastName: string
-    userAvatar?: any
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    avatar?: any
 }

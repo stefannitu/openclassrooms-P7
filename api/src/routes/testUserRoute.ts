@@ -1,6 +1,6 @@
 import Router from 'express'
 
-import { userHasCookie } from '../controllers/testUserCtrl'
+import { userHasCookie } from '../controllers/hasCookieCtrl'
 
 const router = Router()
 

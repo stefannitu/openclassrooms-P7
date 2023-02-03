@@ -5,10 +5,10 @@ export const userHasCookie = (req: Request, res: Response) => {
     if (req.session.userId) {
         return res.status(200).json({
             userId: req.session.userId,
-            userEmail: req.session.userEmail,
-            userFirstName: req.session.userFirstName,
-            userLastName: req.session.userLastName,
-            userAvatar: req.session.userAvatar,
+            userEmail: req.session.email,
+            userFirstName: req.session.firstName,
+            userLastName: req.session.lastName,
+            userAvatar: req.session.avatar,
         })
         // return res.status(200).json({ message: 'User already logged in' })
     }

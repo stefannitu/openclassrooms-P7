@@ -38,13 +38,13 @@ export const Login = () => {
                 <legend>
                     <h1 className=' text-indigo-800 text-center'>Login</h1>
                 </legend>
-                <label htmlFor='userEmail' className='custom-label'>
+                <label htmlFor='email' className='custom-label'>
                     Email
                 </label>
                 <input
                     type='email'
-                    id='userEmail'
-                    name='userEmail'
+                    id='email'
+                    name='email'
                     pattern='^[a-zA-Z0-9\.-]+@(\bgroupomania\.com\b)$'
                     required
                     autoFocus
@@ -58,14 +58,14 @@ export const Login = () => {
                     Email domain should belong to "@groupomania.com"
                 </span>
 
-                <label htmlFor='userPassword' className='custom-label'>
+                <label htmlFor='password' className='custom-label'>
                     Password
                 </label>
                 <div className='relative'>
                     <input
                         type={revealPass ? 'text' : 'password'}
-                        id='userPassword'
-                        name='userPassword'
+                        id='password'
+                        name='password'
                         autoComplete='on'
                         pattern='^(?=.*[0-9])(?=.*[A-Z]).{6,20}$'
                         required

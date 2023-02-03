@@ -3,17 +3,17 @@ import React from 'react'
 export type AuthContextType = {
     isAuthenticated: boolean
     revalidateUser: () => void
-    login: (userEmail: string, userPassword: string) => void
+    login: (email: string, password: string) => void
     currentUser: UserType | null
-    setIsAuthenticated: (isAuthenticated: boolean) => {}
+    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export type UserType = {
-    userFirstName: string
-    userLastName: string
-    userEmail: string
+    firstName: string
+    lastName: string
+    email: string
     userId: string
-    userAvatar: string
+    avatar: string
 }
 
 export type LoadingContextType = {
@@ -22,13 +22,14 @@ export type LoadingContextType = {
 }
 
 export type PostAuthorType = {
-    userEmail: string
+    email: string
+    avatar: string
 }
 
 export type PostCardTypes = {
     id?: number
-    postTitle: string
-    postMessage: string
+    description: string
+    image: string
     createdAt: Date
     author: PostAuthorType
 }
@@ -38,9 +39,9 @@ export type ChildrenAsPropType = {
 }
 
 export type RegisterUserType = {
-    userEmail: string
-    userPassword: string
-    userFirstName: string
-    userLastName: string
-    userAvatar: File | undefined
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    avatar: File | undefined
 }

@@ -18,7 +18,6 @@ export const Register = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         const formdata = new FormData()
-        // if (!refUserFirstName.current) return
         formdata.append(
             refUserFirstName.current!.name,
             refUserFirstName.current!.value
@@ -32,6 +31,7 @@ export const Register = () => {
             refUserPassword.current!.value
         )
         formdata.append(refUserEmail.current!.name, refUserEmail.current!.value)
+
         const file = refUserAvatar.current!.files
         if (!file) return console.log('no file')
         formdata.append(refUserAvatar.current!.name, file[0])
@@ -70,13 +70,13 @@ export const Register = () => {
                     <h1 className=' text-indigo-800 text-center'>Register</h1>
                 </legend>
 
-                <label htmlFor='userFirstName' className='custom-label'>
+                <label htmlFor='firstName' className='custom-label'>
                     First Name
                 </label>
                 <input
                     type='text'
-                    id='userFirstName'
-                    name='userFirstName'
+                    id='firstName'
+                    name='firstName'
                     autoFocus
                     autoCapitalize='on'
                     minLength={4}
@@ -85,13 +85,13 @@ export const Register = () => {
                     className='custom-input'
                     ref={refUserFirstName}
                 />
-                <label htmlFor='userLastName' className='custom-label'>
+                <label htmlFor='lastName' className='custom-label'>
                     Last Name
                 </label>
                 <input
                     type='text'
-                    id='userLastName'
-                    name='userLastName'
+                    id='lastName'
+                    name='lastName'
                     minLength={4}
                     maxLength={10}
                     required
@@ -99,13 +99,13 @@ export const Register = () => {
                     ref={refUserLastName}
                 />
 
-                <label htmlFor='userEmail' className='custom-label'>
+                <label htmlFor='email' className='custom-label'>
                     Email
                 </label>
                 <input
                     type='email'
-                    id='userEmail'
-                    name='userEmail'
+                    id='email'
+                    name='email'
                     pattern='^[a-zA-Z0-9\.-]+@(\bgroupomania\.com\b)$'
                     required
                     className='custom-input'
@@ -117,28 +117,27 @@ export const Register = () => {
                     className=' text-sm text-indigo-600 font-medium'>
                     Email domain should belong to "@groupomania.com"
                 </span>
-                <label htmlFor='userAvatar' className='custom-label'>
+                <label htmlFor='avatar' className='custom-label'>
                     Your Avatar
                 </label>
                 <input
                     type='file'
                     accept='image/png, image/jpeg'
-                    id='userAvatar'
-                    name='userAvatar'
+                    id='avatar'
+                    name='avatar'
                     ref={refUserAvatar}
                     required
                     className='mt-4'
-                    // value='Avatar'
                 />
 
-                <label htmlFor='userPassword' className='custom-label'>
+                <label htmlFor='password' className='custom-label'>
                     Password
                 </label>
                 <div className='relative'>
                     <input
                         type={revealPass ? 'text' : 'password'}
-                        id='userPassword'
-                        name='userPassword'
+                        id='password'
+                        name='password'
                         autoComplete='on'
                         pattern='^(?=.*[0-9])(?=.*[A-Z]).{6,20}$'
                         required

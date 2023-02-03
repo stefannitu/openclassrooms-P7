@@ -10,7 +10,7 @@ export const Home = () => {
     return (
         <div className='relative'>
             <h1 className='text-center'>Dashboard</h1>
-            <p>{currentUser?.userFirstName}</p>
+            <p>{currentUser?.firstName}</p>
             <Share />
             <Posts />
         </div>

@@ -6,9 +6,9 @@ import {
 } from 'react-router-dom'
 import { ProtectedRoute } from './components'
 import { Home, Login, Register } from './pages'
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Default } from './Layout/defaultLayout'
-
+const queryClient = new QueryClient()
 function App() {
     const router = createBrowserRouter([
         {
@@ -23,7 +23,9 @@ function App() {
             path: '/',
             element: (
                 <ProtectedRoute>
-                    <Default />
+                    <QueryClientProvider client={queryClient}>
+                        <Default />
+                    </QueryClientProvider>
                 </ProtectedRoute>
             ),
             children: [

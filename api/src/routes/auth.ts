@@ -1,21 +1,23 @@
 import { Router } from 'express'
-import { upload } from '../middleware/uploadFile'
 
+//controllers
 import { register, login, logout } from '../controllers'
 
+//middleware
+import { upload } from '../middleware/uploadFile'
 import { isGuest } from '../middleware/isGuest'
 import { registerValidation } from '../middleware/registerValidation'
 
 const router = Router()
 
 router.post(
-    '/api/auth/register',
+    '/register',
     isGuest,
-    upload.single('userAvatar'),
+    upload.single('avatar'),
     registerValidation,
     register
 )
-router.post('/api/auth/login', isGuest, login)
-router.post('/api/auth/logout', logout)
+router.post('/login', isGuest, login)
+router.post('/logout', logout)
 
 export default router

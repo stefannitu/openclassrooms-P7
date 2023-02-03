@@ -7,30 +7,57 @@ datasource db {
     url      = "postgresql://ocUser:ocPassword@localhost:5432/groupomania?schema=public"
 }
 
-model User {
-    id            String    @id @default(uuid())
-    userEmail     String    @unique
-    userPassword  String
-    userFirstName String
-    userLastName  String
-    userAvatar    String
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt
-    deletedAt     DateTime?
-    deleted       Boolean   @default(false)
-    messages      Message[]
+model Users {
+    id        String     @id @default(uuid())
+    email     String     @unique
+    password  String
+    firstName String
+    lastName  String
+    avatar    String
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+    deletedAt DateTime?
+    deleted   Boolean    @default(false)
+    posts     Posts[]
+    commnets  Comments[]
+    likes     Likes[]
 
-    @@map("user")
+    @@map("users")
 }
 
-model Message {
+model Posts {
     id          Int       @id @default(autoincrement())
-    postMessage String
+    description String
+    image       String
     createdAt   DateTime  @default(now())
     deletedAt   DateTime?
     deleted     Boolean   @default(false)
     ownerId     String
-    author      User      @relation(fields: [ownerId], references: [id])
+    author      Users     @relation(fields: [ownerId], references: [id])
+    comment     Comments?
+    like        Likes?
 
-    @@map("message")
+    @@map("posts")
+}
+
+model Comments {
+    id         Int      @id @default(autoincrement())
+    descrition String
+    createdAt  DateTime @default(now())
+    ownerId    String
+    author     Users    @relation(fields: [ownerId], references: [id])
+    postId     Int      @unique
+    post       Posts    @relation(fields: [postId], references: [id])
+
+    @@map("comments")
+}
+
+model Likes {
+    id      Int    @id @default(autoincrement())
+    ownerId String @unique
+    author  Users  @relation(fields: [ownerId], references: [id])
+    postId  Int    @unique
+    post    Posts  @relation(fields: [postId], references: [id])
+
+    @@map("likes")
 }

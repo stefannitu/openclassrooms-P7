@@ -5,35 +5,36 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 const prisma = new PrismaClient()
 
 export const savePost = async (req: Request, res: Response) => {
-    const { postTitle, postMessage } = req.body
-    if (!postMessage || !req.session.userId) {
-        return res.status(400).json('Empty fields')
+    const { description } = req.body
+    let image = ''
+    if (!description || !req.session.userId) {
+        return res.status(400).json('No post description or cookie')
     }
+    if (req.file !== undefined) {
+        image = req.file!.filename
+    }
+
     try {
-        await prisma.message.create({
+        await prisma.posts.create({
             data: {
-                postMessage,
+                description,
+                image: image,
                 ownerId: req.session.userId,
             },
         })
         res.status(203).json({ message: 'Post has been created' })
     } catch (error) {
-        if (error instanceof PrismaClientKnownRequestError) {
-            if (error.code == 'P2002') {
-                return res
-                    .status(400)
-                    .json({ message: 'There already a post with this title' })
-            }
-        }
-        res.status(400).json({
+        console.log(error)
+
+        res.status(500).json({
             message: 'There was an error saving message',
         })
     }
 }
 
-export const listPost = async (req: Request, res: Response) => {
+export const getPost = async (req: Request, res: Response) => {
     try {
-        const posts = await prisma.message.findMany({
+        const posts = await prisma.posts.findMany({
             include: { author: true },
         })
         res.status(200).json(posts)
@@ -42,3 +43,5 @@ export const listPost = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+
+export const deletePost = (req: Request, res: Response) => {}

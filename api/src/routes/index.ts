@@ -1,3 +1,3 @@
-export { default as AuthRoute } from './authRoute'
-export { default as MessagesRoute } from './messagesRoute'
-export { default as TestUserRoute } from './testUserRoute'
+export { default as authRoutes } from './auth'
+export { default as postRoutes } from './posts'
+export { default as userRoutes } from './testUserRoute'

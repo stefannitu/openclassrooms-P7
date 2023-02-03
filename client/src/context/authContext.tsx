@@ -1,33 +1,24 @@
 import React, { createContext, useState } from 'react'
 import { AuthContextType, ChildrenAsPropType, UserType } from '../types'
 import { axiosInstance } from '../config/axiosConf'
-import { AxiosError } from 'axios'
 
-export const AuthContext = createContext<AuthContextType>({
-    isAuthenticated: false,
-    setIsAuthenticated: (isAuthenticated: boolean) => {},
-
-    login: () => {},
-    revalidateUser: () => {},
-    currentUser: {} as UserType | null,
-})
-
+export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 export const AuthContextProvider = ({ children }: ChildrenAsPropType) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [currentUser, setCurrentUser] = useState<UserType | null>(null)
 
-    const login = async (userEmail: string, userPassword: string) => {
+    const login = async (email: string, password: string) => {
         const matchedUser = await axiosInstance.post('/auth/login', {
-            userEmail: userEmail,
-            userPassword: userPassword,
+            email: email,
+            password: password,
         })
 
         setCurrentUser({
             userId: matchedUser.data.id,
-            userEmail: matchedUser.data.userEmail,
-            userFirstName: matchedUser.data.userFirstName,
-            userLastName: matchedUser.data.userLastName,
-            userAvatar: matchedUser.data.userAvatar,
+            email: matchedUser.data.email,
+            firstName: matchedUser.data.firstName,
+            lastName: matchedUser.data.lastName,
+            avatar: matchedUser.data.avatar,
         })
 
         setIsAuthenticated(true)
