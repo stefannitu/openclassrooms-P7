@@ -27,7 +27,7 @@ export type PostAuthorType = {
 }
 
 export type PostCardTypes = {
-    id?: number
+    postId: number
     description: string
     image: string
     createdAt: Date

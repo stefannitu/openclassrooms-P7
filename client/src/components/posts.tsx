@@ -18,27 +18,9 @@ export const Posts = () => {
         return 'Loading ...'
     }
 
-    /* useEffect(() => {
-        const fetchPost = async () => {
-            console.log('use effect listcmp')
-            try {
-                const response = await axiosInstance.get('/posts')
-                setPosts(response.data)
-                console.log(response.data)
-
-                setIsLoading(false)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchPost()
-    }, [isLoading])
-
-    if (!posts) return null */
-
     return (
         <div className=' w-full'>
-            <ul>
+            <ul className=' w-4/6 mx-auto'>
                 {data
                     //create card for each post and sort after date
                     .sort((a: any, b: any) =>
@@ -48,6 +30,7 @@ export const Posts = () => {
                         return (
                             <li key={item.id}>
                                 <PostCard
+                                    postId={item.id}
                                     description={item.description}
                                     image={item.image}
                                     createdAt={item.createdAt}

@@ -26,28 +26,28 @@ model Users {
 }
 
 model Posts {
-    id          Int       @id @default(autoincrement())
+    id          Int        @id @default(autoincrement())
     description String
     image       String
-    createdAt   DateTime  @default(now())
+    createdAt   DateTime   @default(now())
     deletedAt   DateTime?
-    deleted     Boolean   @default(false)
+    deleted     Boolean    @default(false)
     ownerId     String
-    author      Users     @relation(fields: [ownerId], references: [id])
-    comment     Comments?
+    author      Users      @relation(fields: [ownerId], references: [id])
+    comment     Comments[]
     like        Likes?
 
     @@map("posts")
 }
 
 model Comments {
-    id         Int      @id @default(autoincrement())
-    descrition String
-    createdAt  DateTime @default(now())
-    ownerId    String
-    author     Users    @relation(fields: [ownerId], references: [id])
-    postId     Int      @unique
-    post       Posts    @relation(fields: [postId], references: [id])
+    id          Int      @id @default(autoincrement())
+    description String
+    createdAt   DateTime @default(now())
+    ownerId     String
+    author      Users    @relation(fields: [ownerId], references: [id])
+    postId      Int
+    post        Posts    @relation(fields: [postId], references: [id])
 
     @@map("comments")
 }

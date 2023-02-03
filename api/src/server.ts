@@ -5,7 +5,13 @@ import Redis from 'ioredis'
 import connectRedis from 'connect-redis'
 import { upload } from './middleware/uploadFile'
 
-import { authRoutes, postRoutes, userRoutes } from './routes'
+import {
+    authRoutes,
+    commentRoutes,
+    postRoutes,
+    uploadRoutes,
+    userRoutes,
+} from './routes'
 import { SERVER_OPTIONS } from './config/server'
 import { REDIS_OPTIONS } from './config/cache'
 import { SESSION_OPTIONS } from './config/session'
@@ -40,8 +46,9 @@ app.use(
 //
 app.use('/api/auth/', authRoutes)
 app.use('/api/users/', userRoutes)
-app.use('/api/posts/', postRoutes)
-// app.use('/api/comments', commentRoutes)
+app.use('/api/posts', postRoutes)
+app.use('/api/upload', uploadRoutes)
+app.use('/api/comment/', commentRoutes)
 // app.use('/api/likes', likeRoutes)
 
 app.listen(SERVER_OPTIONS, () => {

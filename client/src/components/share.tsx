@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useRef, useState, useContext } from 'react'
 import { axiosInstance } from '../config/axiosConf'
 import { AuthContext } from '../context/authContext'
+import { useQueryClient } from '@tanstack/react-query'
 
 export const Share = () => {
     const postRef = useRef<HTMLInputElement>(null)
@@ -9,11 +10,40 @@ export const Share = () => {
 
     const [errorMessage, setErrorMessage] = useState('')
     const { currentUser } = useContext(AuthContext)
-
+    const queryClient = useQueryClient()
+    /* const upload = async () => {
+        try {
+            const file = imgRef.current!.files
+            const formdata = new FormData()
+            formdata.append('file', file![0])
+            const uploadPic = await axios('http://localhost:4300/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'multipart/form-data' },
+                withCredentials: true,
+                data: formdata,
+            })
+            return uploadPic.data
+        } catch (error: any) {
+            if (axios.isAxiosError(error)) {
+                console.log(error.response?.data.message)
+                setErrorMessage(error.response?.data.message)
+            }
+            setErrorMessage('There was am error when trying to save post')
+            console.log(error)
+        }
+    }
+*/
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setErrorMessage('')
-        // console.log(postRef.current!.name, postRef.current!.value)
+        /* 
+        try {
+            let imgUrl = ''
+            if (imgRef.current) imgUrl = await upload()
+            console.log('upload done')
+        } catch (error) {
+            console.log(error)
+        }  */
 
         const formdata = new FormData()
         formdata.append(postRef.current!.name, postRef.current!.value)
@@ -34,6 +64,9 @@ export const Share = () => {
             )
             setErrorMessage(createMessage.data.message)
             postRef.current!.value = ''
+            imgRef.current!.value = ''
+
+            queryClient.invalidateQueries(['posts'])
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
                 console.log(error.response?.data.message)
@@ -44,7 +77,6 @@ export const Share = () => {
             console.log(error)
         }
     }
-
     return (
         <div className='bg-white px-6 py-6 rounded-lg shadow-xl shadow-purple-200 min-w-[700px]'>
             {errorMessage ? errorMessage : null}
