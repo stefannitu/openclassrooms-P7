@@ -1,55 +1,52 @@
 import React, { useContext, useRef, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { AuthContext } from '../context/authContext'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
+import { instance } from '../config/axiosConf'
 
 export const Register = () => {
     const [revealPass, setRevealPass] = useState(false)
-    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+    const { isAuthenticated, setIsAuthenticated, setCurrentUser } =
+        useContext(AuthContext)
     const [userRegisterMessage, setUserRegisterMessage] = useState('')
 
-    const refUserFirstName = useRef<HTMLInputElement>(null)
-    const refUserLastName = useRef<HTMLInputElement>(null)
-    const refUserPassword = useRef<HTMLInputElement>(null)
-    const refUserEmail = useRef<HTMLInputElement>(null)
-    const refUserAvatar = useRef<HTMLInputElement>(null)
+    const refFn = useRef<HTMLInputElement>(null)
+    const refLn = useRef<HTMLInputElement>(null)
+    const refPass = useRef<HTMLInputElement>(null)
+    const refEmail = useRef<HTMLInputElement>(null)
+    const refAvatar = useRef<HTMLInputElement>(null)
 
     // const [formData, setFormData] = useState<RegisterUserType>(formInfo)
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const formdata = new FormData()
-        formdata.append(
-            refUserFirstName.current!.name,
-            refUserFirstName.current!.value
-        )
-        formdata.append(
-            refUserLastName.current!.name,
-            refUserLastName.current!.value
-        )
-        formdata.append(
-            refUserPassword.current!.name,
-            refUserPassword.current!.value
-        )
-        formdata.append(refUserEmail.current!.name, refUserEmail.current!.value)
 
-        const file = refUserAvatar.current!.files
-        if (!file) return console.log('no file')
-        formdata.append(refUserAvatar.current!.name, file[0])
-
+        let test = '22'
         try {
-            //send data to API
-            const register = await axios(
-                'http://localhost:4300/api/auth/register',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                    withCredentials: true,
-                    data: formdata,
-                }
+            const formdata = new FormData()
+            formdata.append(refFn.current!.name, refFn.current!.value)
+            formdata.append(refLn.current!.name, refLn.current!.value)
+            formdata.append(refPass.current!.name, refPass.current!.value)
+            formdata.append(refEmail.current!.name, refEmail.current!.value)
+            formdata.append(
+                refAvatar.current!.name,
+                refAvatar.current!.files![0]
             )
 
-            setUserRegisterMessage(register.data.message)
-            if (register.status == 203) setIsAuthenticated(true)
+            const response = await instance('/auth/register', {
+                method: 'POST',
+                data: formdata,
+            })
+
+            setCurrentUser({
+                userId: response.data.user.id,
+                email: response.data.user.email,
+                firstName: response.data.user.firstName,
+                lastName: response.data.user.lastName,
+                avatar: response.data.user.avatar,
+            })
+
+            setUserRegisterMessage(response.data.message)
+            setIsAuthenticated(true)
         } catch (error) {
             if (error instanceof AxiosError) {
                 return setUserRegisterMessage(error!.response!.data.message)
@@ -57,9 +54,10 @@ export const Register = () => {
             setUserRegisterMessage('There is a server error please try again')
         }
     }
-    if (isAuthenticated) return <Navigate to='/' />
 
-    return (
+    return isAuthenticated ? (
+        <Navigate to='/' />
+    ) : (
         <div className='h-screen bg-cyan-400 flex flex-col justify-center items-center gap-5'>
             {userRegisterMessage ? userRegisterMessage : null}
             <form
@@ -83,7 +81,7 @@ export const Register = () => {
                     maxLength={10}
                     required
                     className='custom-input'
-                    ref={refUserFirstName}
+                    ref={refFn}
                 />
                 <label htmlFor='lastName' className='custom-label'>
                     Last Name
@@ -96,7 +94,7 @@ export const Register = () => {
                     maxLength={10}
                     required
                     className='custom-input'
-                    ref={refUserLastName}
+                    ref={refLn}
                 />
 
                 <label htmlFor='email' className='custom-label'>
@@ -110,7 +108,7 @@ export const Register = () => {
                     required
                     className='custom-input'
                     aria-describedby='emailDesc'
-                    ref={refUserEmail}
+                    ref={refEmail}
                 />
                 <span
                     id='emailDesc'
@@ -125,7 +123,7 @@ export const Register = () => {
                     accept='image/png, image/jpeg'
                     id='avatar'
                     name='avatar'
-                    ref={refUserAvatar}
+                    ref={refAvatar}
                     required
                     className='mt-4'
                 />
@@ -143,7 +141,7 @@ export const Register = () => {
                         required
                         className='custom-input'
                         aria-describedby='passDesc'
-                        ref={refUserPassword}
+                        ref={refPass}
                     />
                     <span
                         className='absolute top-2 right-3 cursor-pointer font-medium text-indigo-800'

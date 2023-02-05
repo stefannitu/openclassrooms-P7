@@ -1,20 +1,18 @@
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useContext } from 'react'
 import { AuthContext } from '../context/authContext'
-import { axiosInstance } from '../config/axiosConf'
-//testin purpose
-import { user } from '../../data'
+import { instance } from '../config/axiosConf'
 
 export const Header = () => {
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
 
     const handleLogout = async () => {
         try {
-            const logout = await axiosInstance.post('/auth/logout')
-
-            setIsAuthenticated(false)
+            const logout = await instance.get('/auth/logout')
         } catch (error) {
             console.log(error)
+        } finally {
+            setIsAuthenticated(false)
         }
     }
 

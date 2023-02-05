@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useRef, useState, useContext } from 'react'
-import { axiosInstance } from '../config/axiosConf'
+import { instance } from '../config/axiosConf'
 import { AuthContext } from '../context/authContext'
 import { useQueryClient } from '@tanstack/react-query'
 

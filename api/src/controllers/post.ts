@@ -35,7 +35,14 @@ export const savePost = async (req: Request, res: Response) => {
 export const getPost = async (req: Request, res: Response) => {
     try {
         const posts = await prisma.posts.findMany({
-            include: { author: true, comment: true },
+            include: {
+                author: true,
+                _count: {
+                    select: {
+                        comment: true,
+                    },
+                },
+            },
         })
         res.status(200).json(posts)
     } catch (error) {

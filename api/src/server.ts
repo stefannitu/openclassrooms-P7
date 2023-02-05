@@ -49,6 +49,7 @@ app.use('/api/users/', userRoutes)
 app.use('/api/posts', postRoutes)
 app.use('/api/upload', uploadRoutes)
 app.use('/api/comment/', commentRoutes)
+app.use('/api/hascookie', userRoutes)
 // app.use('/api/likes', likeRoutes)
 
 app.listen(SERVER_OPTIONS, () => {

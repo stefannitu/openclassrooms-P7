@@ -2,10 +2,12 @@ import { useRef, useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../context/authContext'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { AxiosError } from 'axios'
+import { instance } from '../config/axiosConf'
 
 export const Login = () => {
     const navigate = useNavigate()
-    const { isAuthenticated, login } = useContext(AuthContext)
+    const { isAuthenticated, setCurrentUser, setIsAuthenticated } =
+        useContext(AuthContext)
     const [revealPass, setRevealPass] = useState(false)
     const [errMessage, setErrMessage] = useState('')
 
@@ -15,15 +17,27 @@ export const Login = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault()
         try {
-            await login(emailRef.current!.value, passRef.current!.value)
-            navigate('/')
+            // const login = async () => {
+            const response = await instance.post('/auth/login', {
+                email: emailRef.current!.value,
+                password: passRef.current!.value,
+            })
+
+            setCurrentUser({
+                userId: response.data.user.id,
+                email: response.data.user.email,
+                firstName: response.data.user.firstName,
+                lastName: response.data.user.lastName,
+                avatar: response.data.user.avatar,
+            })
+
+            setErrMessage(response.data.message)
+            setIsAuthenticated(true)
         } catch (error) {
             if (error instanceof AxiosError) {
                 return setErrMessage(error.response!.data.message)
             }
-            console.log(error)
         }
-        // context to keep the user authenticated across the application
     }
 
     return isAuthenticated ? (

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useRef, useState, useContext } from 'react'
-import { axiosInstance } from '../config/axiosConf'
+import { instance } from '../config/axiosConf'
 import { AuthContext } from '../context/authContext'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchComments } from '../fetch/fetchers'
@@ -14,10 +14,8 @@ export const Comment = ({ postId }: any) => {
     const queryClient = useQueryClient()
     const { isLoading, error, data } = useQuery({
         queryKey: ['comments', postId],
-        queryFn: async () => await fetchComments(postId),
+        queryFn: async () => fetchComments(postId),
     })
-
-    console.log(data)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -35,15 +33,13 @@ export const Comment = ({ postId }: any) => {
             setErrorMessage(createComment.data.message)
             commRef.current!.value = ''
 
+            queryClient.invalidateQueries(['comments', postId])
             queryClient.invalidateQueries(['posts'])
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
-                console.log(error.response?.data.message)
                 setErrorMessage(error.response?.data.message)
             }
             setErrorMessage('There was am error when trying to save post')
-
-            console.log(error)
         }
     }
     return (
@@ -77,7 +73,7 @@ export const Comment = ({ postId }: any) => {
                 : isLoading
                 ? 'loading'
                 : data.map((comment: any) => (
-                      <div className='border py-3 my-3 flex'>
+                      <div className='border py-3 my-3 flex' key={comment.id}>
                           <img
                               src={
                                   'http://localhost:4300/' +

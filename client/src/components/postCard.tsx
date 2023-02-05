@@ -1,5 +1,5 @@
 import { PostCardTypes } from '../types'
-import { format, fromUnixTime } from 'date-fns'
+import { format } from 'date-fns'
 import { BiCommentDetail } from 'react-icons/bi'
 import { useContext, useState } from 'react'
 import { AuthContext } from '../context/authContext'
@@ -11,6 +11,7 @@ export const PostCard = ({
     createdAt,
     author,
     postId,
+    comment,
 }: PostCardTypes) => {
     const date = new Date(createdAt)
     const { currentUser } = useContext(AuthContext)
@@ -22,7 +23,7 @@ export const PostCard = ({
 
     return (
         <div className=' bg-white w-full my-5 rounded-lg shadow-lg mx-auto py-5 px-8'>
-            <h3>{postId}</h3>
+            <span>post id - {postId}</span>
             <p>{author.email}</p>
             <img
                 src={`http://localhost:4300/${author.avatar}`}
@@ -30,6 +31,7 @@ export const PostCard = ({
             />
             <p>{description}</p>
             <p>{format(date, 'dd/MM/yyyy HH:mm')}</p>
+            {currentUser?.userId == author.id ? <button>Edit</button> : null}
             {image ? (
                 <img
                     src={`http://localhost:4300/${image}`}
@@ -41,7 +43,8 @@ export const PostCard = ({
                 className='flex flex-row items-center gap-2 w-max '
                 onClick={handleClickComment}>
                 <BiCommentDetail className=' text-xl font-bold' />
-                <span>0</span> <span>Comments</span>
+                <span>{comment}</span>
+                <span>Comments</span>
             </button>
             {commentOpen ? <Comment postId={postId} /> : null}
         </div>

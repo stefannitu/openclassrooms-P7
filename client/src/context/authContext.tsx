@@ -1,42 +1,31 @@
 import React, { createContext, useState } from 'react'
 import { AuthContextType, ChildrenAsPropType, UserType } from '../types'
-import { axiosInstance } from '../config/axiosConf'
+import { instance } from '../config/axiosConf'
 
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 export const AuthContextProvider = ({ children }: ChildrenAsPropType) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [currentUser, setCurrentUser] = useState<UserType | null>(null)
 
-    const login = async (email: string, password: string) => {
-        const matchedUser = await axiosInstance.post('/auth/login', {
-            email: email,
-            password: password,
-        })
-
-        setCurrentUser({
-            userId: matchedUser.data.id,
-            email: matchedUser.data.email,
-            firstName: matchedUser.data.firstName,
-            lastName: matchedUser.data.lastName,
-            avatar: matchedUser.data.avatar,
-        })
-
-        setIsAuthenticated(true)
-    }
-
     const revalidateUser = async () => {
-        const user = await axiosInstance.get('/testuser')
-        setCurrentUser(user.data)
-        setIsAuthenticated(true)
+        try {
+            const response = await instance.get('/hascookie')
+            setCurrentUser(response.data.user)
+
+            setIsAuthenticated(true)
+            console.log(response)
+        } catch {
+            setIsAuthenticated(false)
+        }
     }
     return (
         <AuthContext.Provider
             value={{
                 isAuthenticated,
-                login,
+                setIsAuthenticated,
                 revalidateUser,
                 currentUser,
-                setIsAuthenticated,
+                setCurrentUser,
             }}>
             {children}
         </AuthContext.Provider>

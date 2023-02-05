@@ -32,6 +32,6 @@ export const registerValidation = async (
 
         console.log(error)
 
-        res.status(422).json({ message: 'Invalid request data received' })
+        res.status(400).json({ message: 'Invalid request data received' })
     }
 }

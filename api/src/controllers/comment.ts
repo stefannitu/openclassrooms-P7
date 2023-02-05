@@ -20,7 +20,6 @@ export const addComment = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ message: 'could not save comment' })
     }
-    console.log(description, postId)
 }
 
 export const getComment = async (req: Request, res: Response) => {

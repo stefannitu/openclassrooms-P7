@@ -18,6 +18,6 @@ router.post(
     register
 )
 router.post('/login', isGuest, login)
-router.post('/logout', logout)
+router.get('/logout', logout)
 
 export default router
