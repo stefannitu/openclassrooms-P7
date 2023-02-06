@@ -1,15 +1,18 @@
 import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
+import { date } from 'joi'
 
 const prisma = new PrismaClient()
 
 export const savePost = async (req: Request, res: Response) => {
     const { description } = req.body
+
     let image = ''
-    if (!description || !req.session.userId) {
-        return res.status(400).json('No post description or cookie')
+    if (!description) {
+        return res.status(400).json('No post description')
     }
+
     if (req.file !== undefined) {
         image = req.file!.filename
     }
@@ -19,13 +22,11 @@ export const savePost = async (req: Request, res: Response) => {
             data: {
                 description,
                 image: image,
-                ownerId: req.session.userId,
+                ownerId: req.session.userId!,
             },
         })
         res.status(203).json({ message: 'Post has been created' })
     } catch (error) {
-        console.log(error)
-
         res.status(500).json({
             message: 'There was an error saving message',
         })
@@ -35,6 +36,9 @@ export const savePost = async (req: Request, res: Response) => {
 export const getPost = async (req: Request, res: Response) => {
     try {
         const posts = await prisma.posts.findMany({
+            where: {
+                deleted: false,
+            },
             include: {
                 author: true,
                 _count: {
@@ -51,4 +55,18 @@ export const getPost = async (req: Request, res: Response) => {
     }
 }
 
-export const deletePost = (req: Request, res: Response) => {}
+export const deletePost = async (req: Request, res: Response) => {
+    const ownerId = req.session.userId
+    const postId = req.params.postId
+    const deletePost = await prisma.posts.update({
+        extendedWhereUnique: {
+            // id: +postId,
+            // ownerId: ownerId,
+        },
+        data: {
+            deleted: true,
+            deletedAt: new Date(),
+        },
+    })
+    console.log(deletePost)
+}

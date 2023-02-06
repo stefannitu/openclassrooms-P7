@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { useRef, useState, useContext } from 'react'
-import { instance } from '../config/axiosConf'
 import { AuthContext } from '../context/authContext'
 import { useQueryClient } from '@tanstack/react-query'
+import { instance } from '../config/axiosConf'
 
 export const Share = () => {
     const postRef = useRef<HTMLInputElement>(null)
@@ -11,70 +11,37 @@ export const Share = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const { currentUser } = useContext(AuthContext)
     const queryClient = useQueryClient()
-    /* const upload = async () => {
-        try {
-            const file = imgRef.current!.files
-            const formdata = new FormData()
-            formdata.append('file', file![0])
-            const uploadPic = await axios('http://localhost:4300/api/upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'multipart/form-data' },
-                withCredentials: true,
-                data: formdata,
-            })
-            return uploadPic.data
-        } catch (error: any) {
-            if (axios.isAxiosError(error)) {
-                console.log(error.response?.data.message)
-                setErrorMessage(error.response?.data.message)
-            }
-            setErrorMessage('There was am error when trying to save post')
-            console.log(error)
-        }
-    }
-*/
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setErrorMessage('')
-        /* 
-        try {
-            let imgUrl = ''
-            if (imgRef.current) imgUrl = await upload()
-            console.log('upload done')
-        } catch (error) {
-            console.log(error)
-        }  */
 
         const formdata = new FormData()
         formdata.append(postRef.current!.name, postRef.current!.value)
 
         const file = imgRef.current!.files
-        if (!file) return console.log('no file')
-        formdata.append(imgRef.current!.name, file[0])
+        if (!file) {
+            return console.log('no file')
+        } else {
+            formdata.append(imgRef.current!.name, file[0])
+        }
 
         try {
-            const createMessage = await axios(
-                'http://localhost:4300/api/posts',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                    withCredentials: true,
-                    data: formdata,
-                }
-            )
-            setErrorMessage(createMessage.data.message)
+            const savePost = await instance('posts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'multipart/form-data' },
+                data: formdata,
+            })
+            setErrorMessage(savePost.data.message)
             postRef.current!.value = ''
             imgRef.current!.value = ''
-
-            queryClient.invalidateQueries(['posts'])
+            queryClient.invalidateQueries({ queryKey: ['posts'], exact: true })
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
                 console.log(error.response?.data.message)
                 setErrorMessage(error.response?.data.message)
             }
             setErrorMessage('There was am error when trying to save post')
-
-            console.log(error)
         }
     }
     return (
