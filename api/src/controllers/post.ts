@@ -58,15 +58,13 @@ export const getPost = async (req: Request, res: Response) => {
 export const deletePost = async (req: Request, res: Response) => {
     const ownerId = req.session.userId
     const postId = req.params.postId
-    const deletePost = await prisma.posts.update({
-        extendedWhereUnique: {
-            // id: +postId,
-            // ownerId: ownerId,
-        },
-        data: {
-            deleted: true,
-            deletedAt: new Date(),
-        },
-    })
-    console.log(deletePost)
+    const todayDate = new Date()
+    try {
+        const result: number =
+            await prisma.$executeRaw`UPDATE posts set "deleted"=true,"deletedAt"= ${todayDate} WHERE "id"=${+postId} AND "ownerId"=${ownerId};`
+        return res.status(200).json({ message: result })
+    } catch (error) {
+        console.log(deletePost)
+        res.status(400).json({ message: 'Deleting failled' })
+    }
 }

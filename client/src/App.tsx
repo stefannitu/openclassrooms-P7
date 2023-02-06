@@ -5,7 +5,7 @@ import {
     Routes,
 } from 'react-router-dom'
 import { ProtectedRoute } from './components'
-import { Home, Login, Register } from './pages'
+import { Home, Login, Profile, Register } from './pages'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Default } from './Layout/defaultLayout'
 const queryClient = new QueryClient()
@@ -32,6 +32,10 @@ function App() {
                 {
                     path: '/',
                     element: <Home />,
+                },
+                {
+                    path: '/profile',
+                    element: <Profile />,
                 },
             ],
         },
