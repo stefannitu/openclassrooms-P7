@@ -8,6 +8,7 @@ import { upload } from './middleware/uploadFile'
 import {
     authRoutes,
     commentRoutes,
+    likeRoutes,
     postRoutes,
     uploadRoutes,
     userRoutes,
@@ -50,7 +51,7 @@ app.use('/api/posts/', postRoutes)
 app.use('/api/upload/', uploadRoutes)
 app.use('/api/comment/', commentRoutes)
 app.use('/api/hascookie/', userRoutes)
-// app.use('/api/likes', likeRoutes)
+app.use('/api/like', likeRoutes)
 
 app.listen(SERVER_OPTIONS, () => {
     console.log(`Server Running `)

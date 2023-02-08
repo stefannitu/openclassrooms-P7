@@ -5,8 +5,13 @@ export const Profile = () => {
     const { userId } = state
     return (
         <>
-            <div>Profile page</div>
-            <div>{userId}</div>
+            <div>Profile unsplash image</div>
+            <div>
+                profile card
+                {userId}
+                user image user first user last Delete(only for you)
+            </div>
+            <div> list of user posts</div>
         </>
     )
 }

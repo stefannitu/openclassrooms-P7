@@ -24,6 +24,8 @@ export type LoadingContextType = {
 
 export type PostAuthorType = {
     id: String
+    firstName: string
+    lastName: string
     email: String
     avatar: String
 }
@@ -36,6 +38,11 @@ export type PostCommentType = {
     postId: Number
 }
 
+export type LikesType = {
+    postId: number
+    ownerId: string
+}
+
 export type PostCardTypes = {
     postId: number
     description: string
@@ -43,6 +50,8 @@ export type PostCardTypes = {
     createdAt: Date
     author: PostAuthorType
     comment: number
+    likes: LikesType[]
+    likesNumber: number
 }
 
 export type ChildrenAsPropType = {

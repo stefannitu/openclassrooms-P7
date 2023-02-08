@@ -36,7 +36,7 @@ model Posts {
     ownerId     String
     author      Users      @relation(fields: [ownerId], references: [id])
     comment     Comments[]
-    like        Likes?
+    likes       Likes[]
 
     @@map("posts")
 }
@@ -54,11 +54,11 @@ model Comments {
 }
 
 model Likes {
-    id      Int    @id @default(autoincrement())
-    ownerId String @unique
+    ownerId String
     author  Users  @relation(fields: [ownerId], references: [id])
-    postId  Int    @unique
+    postId  Int
     post    Posts  @relation(fields: [postId], references: [id])
 
+    @@id([postId, ownerId])
     @@map("likes")
 }

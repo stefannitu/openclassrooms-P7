@@ -1,14 +1,16 @@
-import { NavLink } from 'react-router-dom'
 import { useContext } from 'react'
 import { AuthContext } from '../context/authContext'
 import { instance } from '../config/axiosConf'
+import { useNavigate, NavLink } from 'react-router-dom'
 
 export const Header = () => {
-    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+    const { isAuthenticated, setIsAuthenticated, currentUser } =
+        useContext(AuthContext)
+    const navigate = useNavigate()
 
     const handleLogout = async () => {
         try {
-            const logout = await instance.get('/auth/logout')
+            await instance.get('/auth/logout')
         } catch (error) {
             console.log(error)
         } finally {
@@ -16,29 +18,42 @@ export const Header = () => {
         }
     }
 
+    const handleClickProfile = () => {
+        navigate('/profile', { state: { userId: currentUser?.userId } })
+    }
+
     return (
         <header className=' bg-black w-full text-white text-center'>
-            <ul className=' flex justify-end items-center gap-9 w-4/5 mx-auto max-[640px]:gap-3 py-10'>
+            <ul className=' flex justify-end items-center w-4/5 mx-auto max-[640px]:gap-3 py-10'>
                 <li className=' mr-auto'>
                     <img
                         src='./src/assets/groupomaniaLogo/icon-left-font-monochrome-white.svg'
                         className=' w-80'
                     />
                 </li>
-                <li>
-                    <NavLink to='about' className=' active:text-3xl'>
-                        <button>About</button>
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to='contact' className=' active:text-3xl'>
-                        <button>Contact</button>
-                    </NavLink>
-                </li>
+
                 {isAuthenticated ? (
-                    <li>
-                        <button onClick={handleLogout}>Logout</button>
-                    </li>
+                    <>
+                        <li className='p-5 border-2 rounded-md border-transparent cursor-pointer hover:border-white hover:bg-slate-800 active:bg-slate-100'>
+                            <NavLink to='/'>Posts</NavLink>
+                        </li>
+                        <li
+                            className='flex items-center gap-2  p-2 border-2 rounded-md  border-transparent cursor-pointer hover:border-white hover:bg-slate-800'
+                            onClick={handleClickProfile}>
+                            {currentUser?.firstName} {currentUser?.lastName}
+                            <img
+                                src={
+                                    'http://localhost:4300/' +
+                                    currentUser?.avatar
+                                }
+                                className='w-12 h-12 rounded-full object-cover'
+                                alt='user avatar'
+                            />
+                        </li>
+                        <li className='p-5 border-2 rounded-md border-transparent cursor-pointer hover:border-white hover:bg-slate-800'>
+                            <button onClick={handleLogout}>Logout</button>
+                        </li>
+                    </>
                 ) : null}
             </ul>
         </header>

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { PostCard } from './index'
 import { useQuery } from '@tanstack/react-query'
 import { fetchPosts } from '../fetch/fetchers'
@@ -7,17 +6,18 @@ export const Posts = () => {
     const { status, data } = useQuery({
         queryKey: ['posts'],
         queryFn: fetchPosts,
+        // keepPreviousData: true,
     })
 
     if (status === 'loading') {
         return <div>'Loading ...'</div>
     }
+    console.log(data)
 
     return (
         <div className=' w-full'>
             <ul>
                 {data
-                    //create card for each post and sort after date
                     .sort((a: any, b: any) =>
                         a.createdAt > b.createdAt ? 1 : -1
                     )
@@ -31,6 +31,8 @@ export const Posts = () => {
                                     createdAt={item.createdAt}
                                     author={item.author}
                                     comment={item._count.comment}
+                                    likes={item.likes}
+                                    likesNumber={item._count.likes}
                                 />
                             </li>
                         )

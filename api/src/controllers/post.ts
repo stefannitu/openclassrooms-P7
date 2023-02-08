@@ -1,7 +1,5 @@
 import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
-import { date } from 'joi'
 
 const prisma = new PrismaClient()
 
@@ -44,6 +42,13 @@ export const getPost = async (req: Request, res: Response) => {
                 _count: {
                     select: {
                         comment: true,
+                        likes: true,
+                    },
+                },
+
+                likes: {
+                    where: {
+                        ownerId: req.session.userId,
                     },
                 },
             },

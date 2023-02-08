@@ -15,10 +15,8 @@ export const Share = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setErrorMessage('')
-
         const formdata = new FormData()
         formdata.append(postRef.current!.name, postRef.current!.value)
-
         const file = imgRef.current!.files
         if (!file) {
             return console.log('no file')
@@ -38,14 +36,14 @@ export const Share = () => {
             queryClient.invalidateQueries({ queryKey: ['posts'], exact: true })
         } catch (error: any) {
             if (axios.isAxiosError(error)) {
-                console.log(error.response?.data.message)
                 setErrorMessage(error.response?.data.message)
             }
             setErrorMessage('There was am error when trying to save post')
         }
     }
+
     return (
-        <div className='bg-white px-6 py-6 rounded-lg shadow-xl shadow-purple-200 min-w-[700px]'>
+        <div className='bg-white px-6 py-6 rounded-lg shadow-xl min-w-[700px]'>
             {errorMessage ? errorMessage : null}
             <div className='flex items-center gap-4 mb-8'>
                 <img
@@ -56,7 +54,6 @@ export const Share = () => {
                     What's on your mind {currentUser?.firstName}
                 </p>
             </div>
-
             <form
                 encType='multipart/form-data'
                 className='flex flex-col gap-4'
@@ -69,7 +66,6 @@ export const Share = () => {
                     autoFocus
                     ref={postRef}
                 />
-                {/* <label className='block'> */}
                 <span className='sr-only'>Choose post photo</span>
                 <input
                     type='file'
@@ -87,7 +83,9 @@ export const Share = () => {
                 {/* </label> */}
                 <button
                     type='submit'
-                    className='group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-2 shadow-md'>
+                    className='flex w-full justify-center rounded-md border-transparent bg-gradient-to-l from-sky-500 to-indigo-500 
+					py-2 px-4 text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none 
+					 mt-6 shadow-md hover:bg-gradient-to-bl  focus:bg-gradient-to-b'>
                     Post
                 </button>
             </form>
