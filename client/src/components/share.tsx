@@ -64,12 +64,13 @@ export const Share = () => {
                     name='description'
                     className=' border-b-2 border-purple-300 focus:outline-none font-normal px-6 pt-3 rounded-t-md hover:border-purple-500 hover:bg-purple-50'
                     autoFocus
+                    required
                     ref={postRef}
                 />
                 <span className='sr-only'>Choose post photo</span>
                 <input
                     type='file'
-                    accept='image/png, image/jpeg'
+                    accept='image/png, image/jpeg, image/webp'
                     id='image'
                     name='image'
                     className='block w-full text-sm text-slate-500

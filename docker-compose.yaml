@@ -8,6 +8,8 @@ services:
             - POSTGRES_PASSWORD=ocPassword
             - POSTGRES_DB=groupomania
             - POSTGRES_HOST=localhost   
+      volumes:
+            - ./postgres-docker:/var/lib/postgresql/data
       ports:
         - 5432:5432
     redis:
@@ -15,3 +17,4 @@ services:
       container_name: redis
       ports:
         - 6379:6379
+    

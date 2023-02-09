@@ -4,12 +4,13 @@ const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
     'image/png': 'png',
+    'image/webp': 'webp',
 }
 
 //set storage  for multer
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './upl')
+        cb(null, './public')
     },
     filename: (req, file, cb) => {
         const ext = file.mimetype.split('/')[1]
