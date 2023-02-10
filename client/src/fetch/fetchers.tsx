@@ -19,3 +19,22 @@ export const fetchComments = async (postId: number) => {
         console.log(error)
     }
 }
+
+export const fetchUser = async (userId: string) => {
+    try {
+        const response = await instance.get(`/users/${userId}`)
+        console.log(response)
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const fetchUserPosts = async (userId: any) => {
+    try {
+        const response = await instance.get(`/posts/${userId}?read=yes`)
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}

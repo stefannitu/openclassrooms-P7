@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { AuthContext } from '../context/authContext'
 import { instance } from '../config/axiosConf'
-import { useNavigate, NavLink } from 'react-router-dom'
+import { useNavigate, NavLink, Link } from 'react-router-dom'
 
 export const Header = () => {
     const { isAuthenticated, setIsAuthenticated, currentUser } =
@@ -26,12 +26,13 @@ export const Header = () => {
         <header className=' bg-black w-full text-white text-center'>
             <ul className=' flex justify-end items-center w-4/5 mx-auto max-[640px]:gap-3 py-10'>
                 <li className=' mr-auto'>
-                    <img
-                        src='./src/assets/groupomaniaLogo/icon-left-font-monochrome-white.svg'
-                        className=' w-80'
-                    />
+                    <Link to='/'>
+                        <img
+                            src='./src/assets/groupomaniaLogo/icon-left-font-monochrome-white.svg'
+                            className=' w-80'
+                        />
+                    </Link>
                 </li>
-
                 {isAuthenticated ? (
                     <>
                         <li className='p-5 border-2 rounded-md border-transparent cursor-pointer hover:border-white hover:bg-slate-800 active:bg-slate-100'>

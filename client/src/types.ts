@@ -43,15 +43,21 @@ export type LikesType = {
     ownerId: string
 }
 
+export type ReadsType = {
+    postId: number
+    ownerId: string
+}
+
 export type PostCardTypes = {
     postId: number
     description: string
     image: string
     createdAt: Date
-    author: PostAuthorType
-    comment: number
-    likes: LikesType[]
-    likesNumber: number
+    author?: PostAuthorType
+    comment?: number
+    likes?: LikesType[]
+    likesNumber?: number
+    reads?: ReadsType[]
 }
 
 export type ChildrenAsPropType = {

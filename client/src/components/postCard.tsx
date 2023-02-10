@@ -1,7 +1,7 @@
 import { PostCardTypes } from '../types'
 import { format } from 'date-fns'
 import { BiCommentDetail } from 'react-icons/bi'
-import { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { AuthContext } from '../context/authContext'
 import { Comment } from './comment'
 import { instance } from '../config/axiosConf'
@@ -19,12 +19,15 @@ export const PostCard = ({
     comment,
     likes,
     likesNumber,
+    reads,
 }: PostCardTypes) => {
     const date = new Date(createdAt)
+    const [isExpanded, setIsExpanded] = useState(false)
     const { currentUser } = useContext(AuthContext)
     const [commentOpen, setCommentOpen] = useState(false)
     const queryClient = useQueryClient()
     const navigate = useNavigate()
+    const refCard = useRef<HTMLDivElement>(null)
 
     // const [isLiked, setIsLiked] = useState<boolean>(!!likes.length)
     // console.log(likes, likes.length, isLiked)
@@ -46,9 +49,7 @@ export const PostCard = ({
                 method: 'POST',
                 data: { postId, likes },
             })
-            queryClient.invalidateQueries({ queryKey: ['posts'] })
         } catch (error: any) {
-            console.log(error)
             console.log('There was am error when trying to save post')
         }
     }
@@ -81,23 +82,43 @@ export const PostCard = ({
     }
 
     const profileClick = () => {
-        navigate('/profile', { state: { userId: author.id } })
+        navigate('/profile', { state: { userId: author!.id } })
+    }
+
+    const handleRead = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        if (!reads!.length) {
+            try {
+                await instance('/posts/read', {
+                    method: 'post',
+                    data: { postId },
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        refCard.current!.classList!.remove('max-h-52')
+        setIsExpanded(true)
     }
 
     return (
-        <div className=' bg-white max-w-[700px] my-5 rounded-lg shadow-2xl mx-auto py-5 px-4 flex flex-col gap-4'>
-            <div className='flex justify-between items-start py-4 border-cyan-500 '>
-                <div className=' flex gap-4'>
+        <div
+            className='relative bg-white max-w-[700px] my-5 rounded-lg shadow-2xl mx-auto py-5 px-4 flex flex-col gap-4 max-h-52 overflow-hidden '
+            ref={refCard}>
+            <div className='flex justify-between items-start py-4'>
+                <div className=' flex gap-4 '>
                     <img
-                        src={`http://localhost:4300/${author.avatar}`}
+                        src={`http://localhost:4300/${author!.avatar}`}
                         className='w-12 h-12 rounded-full object-cover'
                     />
                     <div>
-                        <p onClick={profileClick} className='font-bold '>
+                        <p
+                            onClick={profileClick}
+                            className='font-bold before:contents- '>
                             <span className='text-purple-500 cursor-pointer'>
-                                {author.firstName}
+                                {author!.firstName}
                             </span>{' '}
-                            <span className=''>{author.lastName}</span>
+                            <span className=''>{author!.lastName}</span>
                         </p>
                         <p className=' text-sm text-gray-500'>
                             Posted on :{' '}
@@ -106,19 +127,26 @@ export const PostCard = ({
                     </div>
                 </div>
                 <div>
-                    {currentUser?.userId == author.id ? (
+                    {currentUser?.userId == author!.id ? (
                         <button
                             onClick={handleDeleteClick}
                             className=' font-bold text-lg w-12 pb-2 rounded-2xl hover:bg-zinc-200 text-red-500'>
                             X
                         </button>
                     ) : null}
+                    {!isExpanded ? (
+                        <button onClick={handleRead}> Read more..</button>
+                    ) : null}
+
+                    {reads!.length ? (
+                        <div className='p-1 text-center bg-green-400'>Read</div>
+                    ) : null}
                 </div>
             </div>
             <div className=' '>
-                <div className='pb-4 border-t-4 pt-4 text-gray-600'>
+                <p className='pb-4 border-t-4 pt-4 text-gray-600 truncate'>
                     {description}
-                </div>
+                </p>
                 <div>
                     {image ? (
                         <img
@@ -132,7 +160,7 @@ export const PostCard = ({
                 <div
                     className='flex items-center  gap-2'
                     onClick={handleLikeClick}>
-                    {likes.length ? (
+                    {likes!.length ? (
                         <FaThumbsUp className='text-2xl text-green-500' />
                     ) : (
                         <FaRegThumbsUp className='text-2xl' />

@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { instance } from '../config/axiosConf'
 
 export const Share = () => {
-    const postRef = useRef<HTMLInputElement>(null)
+    const postRef = useRef<HTMLTextAreaElement>(null)
     const imgRef = useRef<HTMLInputElement>(null)
 
     const [errorMessage, setErrorMessage] = useState('')
@@ -58,15 +58,24 @@ export const Share = () => {
                 encType='multipart/form-data'
                 className='flex flex-col gap-4'
                 onSubmit={handleSubmit}>
-                <input
+                {/*   <input
                     type='text'
                     id='description'
                     name='description'
-                    className=' border-b-2 border-purple-300 focus:outline-none font-normal px-6 pt-3 rounded-t-md hover:border-purple-500 hover:bg-purple-50'
+                    className=' border-b-2 border-purple-300 focus:outline-none font-normal px-6 pt-3 rounded-t-md hover:border-purple-500'
                     autoFocus
                     required
                     ref={postRef}
-                />
+                /> */}
+
+                <textarea
+                    name='description'
+                    id='description'
+                    rows={5}
+                    className='border resize-none focus:outline-none rounded-md hover:border-gray-300 focus:border-gray-300'
+                    ref={postRef}
+                    required></textarea>
+
                 <span className='sr-only'>Choose post photo</span>
                 <input
                     type='file'

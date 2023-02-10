@@ -1,8 +1,8 @@
 import express from 'express'
 import { hasCookie } from '../controllers'
-// import { getUser } from '../controllers/userCtrl'
+import { getUser } from '../controllers'
 
 const router = express.Router()
-// router.get('/find/:userId', getUser)
 router.get('/', hasCookie)
+router.get('/:userId', getUser)
 export default router

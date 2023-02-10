@@ -7,9 +7,7 @@ services:
             - POSTGRES_USER=ocUser
             - POSTGRES_PASSWORD=ocPassword
             - POSTGRES_DB=groupomania
-            - POSTGRES_HOST=localhost   
-      volumes:
-            - ./postgres-docker:/var/lib/postgresql/data
+            - POSTGRES_HOST=localhost         
       ports:
         - 5432:5432
     redis:

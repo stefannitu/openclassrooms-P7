@@ -12,31 +12,32 @@ export const Posts = () => {
     if (status === 'loading') {
         return <div>'Loading ...'</div>
     }
-    console.log(data)
 
     return (
         <div className=' w-full'>
             <ul>
-                {data
-                    .sort((a: any, b: any) =>
-                        a.createdAt > b.createdAt ? 1 : -1
-                    )
-                    .map((item: any) => {
-                        return (
-                            <li key={item.id}>
-                                <PostCard
-                                    postId={item.id}
-                                    description={item.description}
-                                    image={item.image}
-                                    createdAt={item.createdAt}
-                                    author={item.author}
-                                    comment={item._count.comment}
-                                    likes={item.likes}
-                                    likesNumber={item._count.likes}
-                                />
-                            </li>
+                {data &&
+                    data
+                        .sort((a: any, b: any) =>
+                            a.createdAt > b.createdAt ? 1 : -1
                         )
-                    })}
+                        .map((item: any) => {
+                            return (
+                                <li key={item.id}>
+                                    <PostCard
+                                        postId={item.id}
+                                        description={item.description}
+                                        image={item.image}
+                                        createdAt={item.createdAt}
+                                        author={item.author}
+                                        comment={item._count.comment}
+                                        likes={item.likes}
+                                        likesNumber={item._count.likes}
+                                        reads={item.reads}
+                                    />
+                                </li>
+                            )
+                        })}
             </ul>
         </div>
     )

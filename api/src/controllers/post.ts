@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
+import { callbackify } from 'util'
 
 const prisma = new PrismaClient()
 
@@ -39,6 +40,7 @@ export const getPost = async (req: Request, res: Response) => {
             },
             include: {
                 author: true,
+                reads: true,
                 _count: {
                     select: {
                         comment: true,
@@ -51,6 +53,9 @@ export const getPost = async (req: Request, res: Response) => {
                         ownerId: req.session.userId,
                     },
                 },
+            },
+            orderBy: {
+                createdAt: 'desc',
             },
         })
         res.status(200).json(posts)
@@ -71,5 +76,62 @@ export const deletePost = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(deletePost)
         res.status(400).json({ message: 'Deleting failled' })
+    }
+}
+
+export const readPost = async (req: Request, res: Response) => {
+    const { postId } = req.body
+    try {
+        const response = await prisma.reads.create({
+            data: {
+                ownerId: req.session.userId!,
+                postId,
+            },
+        })
+        res.status(203).json({ message: 'Post has been read' })
+    } catch (error) {
+        res.status(500).json({
+            message: 'There was an error',
+        })
+        console.log(error)
+    }
+}
+
+export const getUserPosts = async (req: Request, res: Response) => {
+    const userId = req.params.userId
+    try {
+        const posts = await prisma.posts.findMany({
+            where: {
+                deleted: false,
+                ownerId: userId,
+                /*    reads: {
+                    none: {},
+                }, */
+            },
+            include: {
+                author: true,
+                reads: true,
+                _count: {
+                    select: {
+                        comment: true,
+                        likes: true,
+                    },
+                },
+
+                likes: {
+                    where: {
+                        ownerId: req.session.userId,
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+        })
+        res.status(200).json(posts)
+    } catch (error) {
+        res.status(500)
+
+        console.log(error)
     }
 }
