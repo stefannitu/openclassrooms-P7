@@ -30,12 +30,37 @@ export const Profile = () => {
 
     return (
         <div>
-            <div className='bg-yellow-100 max-w-[764px] w-full'>
-                <div>User : {getUserQuery.data.user.firstName}</div>
-                <div>User : {getUserQuery.data.user.lastName}</div>
-                <div>User : {getUserQuery.data.user.email}</div>
-                <div>User : {getUserQuery.data.user.avatar}</div>
-                {currentUser?.userId == userId ? <button>delete</button> : null}
+            <div className='bg-white max-w-[764px] w-full p-5 rounded-lg shadow-lg'>
+                <div className='bg-black '>
+                    <img
+                        src={`http://localhost:4300/${getUserQuery.data.user.avatar}`}
+                        alt='avatar'
+                        className=' w-36 h-36 rounded-full bg-white mx-auto'
+                    />
+                </div>
+                <div className='grid place-content-center py-3 px-5'>
+                    <p className='text-center py-3 text-xl'>
+                        <b>User Profile</b>
+                    </p>
+                    <p>
+                        First name : <b>{getUserQuery.data.user.firstName}</b>
+                    </p>
+                    <p>
+                        Last Name : <b>{getUserQuery.data.user.lastName}</b>
+                    </p>
+                    <p>
+                        Email : <b>{getUserQuery.data.user.email}</b>
+                    </p>
+                    {currentUser?.userId == userId ? (
+                        <button
+                            type='submit'
+                            className='flex w-full justify-center rounded-md border-transparent bg-gradient-to-l from-sky-500 to-indigo-500 
+					py-2 px-4 text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none 
+					 mt-6 shadow-md hover:bg-gradient-to-bl  focus:bg-gradient-to-b'>
+                            Delete user
+                        </button>
+                    ) : null}
+                </div>
             </div>
             <ul>
                 {postsQuery.data.map((item: any) => {
