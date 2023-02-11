@@ -3,17 +3,20 @@ import Joi from 'joi'
 
 const userSchema = Joi.object({
     //check if UserEmail isemail has no spaces, is lowercase and belongs to groupomania.com
-    userEmail: Joi.string()
+    email: Joi.string()
         .trim()
         .lowercase()
         .email()
-        .pattern(/^\w+\b@groupomania\.com\b$/)
+        .pattern(/^[a-zA-Z0-9\.-]+@(\bgroupomania\.com\b)$/)
         .required(),
     //check if userPassword has minimum 5 chars and is not the same with userEmail
-    userPassword: Joi.string()
+    password: Joi.string()
         .min(5)
         .invalid(Joi.ref('userEmail'), 'password', 'Password', 'Pa55w0rd')
         .required(),
+    firstName: Joi.string().min(2).required(),
+    lastName: Joi.string().min(2).required(),
+    // userAvatar: Joi.object().required,
 })
 
 export const registerValidation = async (
@@ -25,6 +28,10 @@ export const registerValidation = async (
         await userSchema.validateAsync(req.body, { abortEarly: false })
         next()
     } catch (error) {
-        res.status(422).json({ message: 'Invalid request data received' })
+        console.log(req.body)
+
+        console.log(error)
+
+        res.status(400).json({ message: 'Invalid request data received' })
     }
 }

@@ -1,5 +1,6 @@
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["extendedWhereUnique"]
 }
 
 datasource db {
@@ -7,24 +8,69 @@ datasource db {
     url      = "postgresql://ocUser:ocPassword@localhost:5432/groupomania?schema=public"
 }
 
-model User {
-    id           String    @id @default(uuid())
-    userEmail    String    @unique
-    userPassword String
-    createdAt    DateTime  @default(now())
-    updatedAt    DateTime  @updatedAt
-    deletedAt    DateTime?
-    messages     Message[]
+model Users {
+    id        String     @id @default(uuid())
+    email     String     @unique
+    password  String
+    firstName String
+    lastName  String
+    avatar    String
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+    deletedAt DateTime?
+    deleted   Boolean    @default(false)
+    posts     Posts[]
+    commnets  Comments[]
+    likes     Likes[]
+    reads     Reads[]
 
-    @@map("user")
+    @@map("users")
 }
 
-model Message {
-    id          Int    @id @default(autoincrement())
-    postTitle   String @unique
-    postMessage String
-    author      User   @relation(fields: [userId], references: [id])
-    userId      String
+model Posts {
+    id          Int        @id @default(autoincrement())
+    description String
+    image       String
+    createdAt   DateTime   @default(now())
+    deletedAt   DateTime?
+    deleted     Boolean    @default(false)
+    ownerId     String
+    author      Users      @relation(fields: [ownerId], references: [id])
+    comment     Comments[]
+    likes       Likes[]
+    reads       Reads[]
 
-    @@map("message")
+    @@map("posts")
+}
+
+model Comments {
+    id          Int      @id @default(autoincrement())
+    description String
+    createdAt   DateTime @default(now())
+    ownerId     String
+    author      Users    @relation(fields: [ownerId], references: [id])
+    postId      Int
+    post        Posts    @relation(fields: [postId], references: [id])
+
+    @@map("comments")
+}
+
+model Likes {
+    ownerId String
+    author  Users  @relation(fields: [ownerId], references: [id])
+    postId  Int
+    post    Posts  @relation(fields: [postId], references: [id])
+
+    @@id([postId, ownerId])
+    @@map("likes")
+}
+
+model Reads {
+    ownerId String
+    author  Users  @relation(fields: [ownerId], references: [id])
+    postId  Int
+    post    Posts  @relation(fields: [postId], references: [id])
+
+    @@id([postId, ownerId])
+    @@map("reads")
 }
