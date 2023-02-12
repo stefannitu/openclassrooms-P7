@@ -8,7 +8,7 @@ export const saveLike = async (req: Request, res: Response) => {
 
     if (likes.length) {
         try {
-            const response = await prisma.likes.deleteMany({
+            await prisma.likes.deleteMany({
                 where: {
                     ownerId: req.session.userId,
                     postId,
@@ -21,7 +21,7 @@ export const saveLike = async (req: Request, res: Response) => {
         }
     }
     try {
-        const response = await prisma.likes.create({
+        await prisma.likes.create({
             data: {
                 ownerId: req.session.userId!,
                 postId,

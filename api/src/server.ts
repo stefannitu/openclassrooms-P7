@@ -3,7 +3,6 @@ import cors from 'cors'
 import session from 'express-session'
 import Redis from 'ioredis'
 import connectRedis from 'connect-redis'
-import { upload } from './middleware/uploadFile'
 
 import {
     authRoutes,

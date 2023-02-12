@@ -1,6 +1,5 @@
 import axios from 'axios'
 import React, { useRef, useState, useContext } from 'react'
-import { instance } from '../config/axiosConf'
 import { AuthContext } from '../context/authContext'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchComments } from '../fetch/fetchers'

@@ -1,14 +1,16 @@
+import React, { useContext, useRef, useState } from 'react'
+
 import { PostCardTypes } from '../types'
 import { format } from 'date-fns'
-import { BiCommentDetail } from 'react-icons/bi'
-import React, { useContext, useRef, useState } from 'react'
 import { AuthContext } from '../context/authContext'
-import { Comment } from './comment'
+import { Comment } from './'
 import { instance } from '../config/axiosConf'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { FaRegThumbsUp } from 'react-icons/fa'
-import { FaThumbsUp } from 'react-icons/fa'
+
+import { FaRegThumbsUp, FaThumbsUp } from 'react-icons/fa'
+import { RiDeleteBin6Line } from 'react-icons/ri'
+import { BiCommentDetail } from 'react-icons/bi'
 
 export const PostCard = ({
     description,
@@ -105,6 +107,7 @@ export const PostCard = ({
         <div
             className='relative bg-white max-w-[700px] my-5 rounded-lg shadow-2xl mx-auto py-5 px-4 flex flex-col gap-4 max-h-52 overflow-hidden '
             ref={refCard}>
+            {/* <div className='absolute  top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed bg-blue-200 opacity-80'></div> */}
             <div className='flex justify-between items-start py-4'>
                 <div className=' flex gap-4 '>
                     <img
@@ -131,15 +134,20 @@ export const PostCard = ({
                         <button
                             onClick={handleDeleteClick}
                             className=' font-bold text-lg w-12 pb-2 rounded-2xl hover:bg-zinc-200 text-red-500'>
-                            X
+                            <RiDeleteBin6Line />
                         </button>
                     ) : null}
                     {!isExpanded ? (
-                        <button onClick={handleRead}> Read more..</button>
+                        <button onClick={handleRead} className='w-40'>
+                            {' '}
+                            Read more..
+                        </button>
                     ) : null}
 
                     {reads!.length ? (
-                        <div className='p-1 text-center bg-green-400'>Read</div>
+                        <div className='p-1 text-center bg-green-400 w-40'>
+                            Read
+                        </div>
                     ) : null}
                 </div>
             </div>

@@ -1,13 +1,12 @@
 import { useRef, useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../context/authContext'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { AxiosError } from 'axios'
 import { instance } from '../config/axiosConf'
 import { GiCheckMark } from 'react-icons/gi'
 import { MdError } from 'react-icons/md'
 
 export const Login = () => {
-    const navigate = useNavigate()
     const { isAuthenticated, setCurrentUser, setIsAuthenticated } =
         useContext(AuthContext)
     const [revealPass, setRevealPass] = useState(false)
