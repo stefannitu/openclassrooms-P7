@@ -17,16 +17,17 @@ export const Profile = () => {
         queries: [
             {
                 queryKey: ['posts', userId],
-                queryFn: async () => fetchUserPosts(userId),
+                queryFn: () => fetchUserPosts(userId),
             },
             {
                 queryKey: ['user', userId],
-                queryFn: async () => fetchUser(userId),
+                queryFn: () => fetchUser(userId),
             },
         ],
     })
 
     if (postsQuery.isLoading) return <p> Data is loading</p>
+    if (getUserQuery.isLoading) return <p> Data is loading</p>
 
     return (
         <div>
