@@ -1,5 +1,9 @@
 # OpenClassRooms Project 7*
 
+API - diagram
+[Figma] (https://www.figma.com/file/yTFBDUU0AVF8JKRTUo7qmS/Untitled?node-id=0%3A1&t=sJHDXUhjbvbJnhWt-1)
+
+
 ## Install quide:
 
 1. Clone repo

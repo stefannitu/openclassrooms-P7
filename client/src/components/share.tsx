@@ -58,16 +58,6 @@ export const Share = () => {
                 encType='multipart/form-data'
                 className='flex flex-col gap-4'
                 onSubmit={handleSubmit}>
-                {/*   <input
-                    type='text'
-                    id='description'
-                    name='description'
-                    className=' border-b-2 border-purple-300 focus:outline-none font-normal px-6 pt-3 rounded-t-md hover:border-purple-500'
-                    autoFocus
-                    required
-                    ref={postRef}
-                /> */}
-
                 <textarea
                     name='description'
                     id='description'

@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { useContext } from 'react'
+import { Navigate } from 'react-router-dom'
 import { AuthContext } from '../context/authContext'
 import { ChildrenAsPropType } from '../types'
 

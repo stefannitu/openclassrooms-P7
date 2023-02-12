@@ -1,7 +1,5 @@
 import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
-import { callbackify } from 'util'
-import { SortOptions } from '@redis/client/dist/lib/commands/generic-transformers'
 
 const prisma = new PrismaClient()
 
@@ -87,7 +85,7 @@ export const deletePost = async (req: Request, res: Response) => {
 export const readPost = async (req: Request, res: Response) => {
     const { postId } = req.body
     try {
-        const response = await prisma.reads.create({
+        await prisma.reads.create({
             data: {
                 ownerId: req.session.userId!,
                 postId,

@@ -1,10 +1,12 @@
 import { PostCard } from './index'
 import { useQuery } from '@tanstack/react-query'
 import { fetchPosts } from '../fetch/fetchers'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { AuthContext } from '../context/authContext'
 
 export const Posts = () => {
     const [newData, setNewData] = useState([])
+    const { currentUser } = useContext(AuthContext)
 
     const { status, data } = useQuery({
         queryKey: ['posts'],
@@ -30,6 +32,7 @@ export const Posts = () => {
                 return data.filter((item: any) => item.reads.length >= 0)
             })
         }
+
         if (e.target.value == 'read') {
             setNewData(() => {
                 return data.filter((item: any) => item.reads.length > 0)
