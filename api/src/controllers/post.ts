@@ -41,7 +41,11 @@ export const getPost = async (req: Request, res: Response) => {
             },
             include: {
                 author: true,
-                reads: true,
+                reads: {
+                    where: {
+                        ownerId: req.session.userId,
+                    },
+                },
                 _count: {
                     select: {
                         comment: true,
