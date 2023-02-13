@@ -23,7 +23,7 @@ export const Register = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        let test = '22'
+        // let test = '22'
         try {
             const formdata = new FormData()
             formdata.append(refFn.current!.name, refFn.current!.value)
@@ -59,7 +59,7 @@ export const Register = () => {
     }
 
     return isAuthenticated ? (
-        <Navigate to='/' />
+        <Navigate to='/login' />
     ) : (
         <div className='h-screen bg-gradient-to-r from-sky-500 to-indigo-600 flex flex-col justify-center items-center gap-5'>
             {userRegisterMessage ? (
@@ -80,7 +80,6 @@ export const Register = () => {
                             Register
                         </h1>
                     </legend>
-                    {/* first name */}
                     <label htmlFor='firstName' className='custom-label'>
                         First Name
                     </label>
@@ -197,6 +196,7 @@ export const Register = () => {
                         id='passDesc'
                         className=' text-sm text-indigo-600 font-medium'>
                         Password must have at least 6 characters, 1 number and 1
+                        uppercase letter
                     </span>
                     <button
                         type='submit'

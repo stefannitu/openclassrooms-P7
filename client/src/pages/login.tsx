@@ -114,7 +114,7 @@ export const Login = () => {
                         id='passDesc'
                         className=' text-sm text-indigo-600 font-medium'>
                         Password must have at least 6 characters, 1 number and 1
-                        uppercase
+                        uppercase letter
                     </span>
                     <button
                         type='submit'

@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { FaRegThumbsUp, FaThumbsUp } from 'react-icons/fa'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { BiCommentDetail } from 'react-icons/bi'
+import { MdMarkEmailRead, MdMarkunread } from 'react-icons/md'
 
 export const PostCard = ({
     description,
@@ -30,10 +31,11 @@ export const PostCard = ({
     const queryClient = useQueryClient()
     const navigate = useNavigate()
     const refCard = useRef<HTMLDivElement>(null)
+    const refCardMask = useRef<HTMLDivElement>(null)
 
-    // const [isLiked, setIsLiked] = useState<boolean>(!!likes.length)
-    // console.log(likes, likes.length, isLiked)
-
+    //
+    //functions start
+    //
     const deletePost = async () => {
         try {
             await instance('posts/delete/' + postId, {
@@ -44,7 +46,6 @@ export const PostCard = ({
         }
     }
 
-    //LIKES
     const saveLike = async () => {
         try {
             await instance('like', {
@@ -55,6 +56,19 @@ export const PostCard = ({
             console.log('There was am error when trying to save post')
         }
     }
+
+    const saveRead = async () => {
+        try {
+            await instance('/posts/read', {
+                method: 'post',
+                data: { postId },
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    //
+    //functions end
     //
 
     const mutationDelete = useMutation({
@@ -70,6 +84,17 @@ export const PostCard = ({
             queryClient.invalidateQueries(['posts'])
         },
     })
+
+    const postReading = useMutation({
+        mutationFn: saveRead,
+        onSuccess() {
+            queryClient.invalidateQueries(['posts'])
+        },
+    })
+
+    //
+    // handlers start
+    //
 
     const handleLikeClick = () => {
         mutationAddLike.mutate()
@@ -90,26 +115,36 @@ export const PostCard = ({
     const handleRead = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         if (!reads!.length) {
-            try {
-                await instance('/posts/read', {
-                    method: 'post',
-                    data: { postId },
-                })
-            } catch (error) {
-                console.log(error)
-            }
+            postReading.mutate()
         }
         refCard.current!.classList!.remove('max-h-52')
+        refCardMask.current?.classList.add('hidden')
         setIsExpanded(true)
     }
 
+    //
+    // handlers end
+    //
+
     return (
         <div
-            className='relative bg-white max-w-[700px] my-5 rounded-lg shadow-2xl mx-auto py-5 px-4 flex flex-col gap-4 max-h-52 overflow-hidden '
+            className='relative bg-white w-[374px] m-2 rounded-lg shadow-2xl mx-auto py-2 px-2 flex flex-col gap-3 max-h-52 overflow-hidden md:w-[570px]'
             ref={refCard}>
-            {/* <div className='absolute  top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed bg-blue-200 opacity-80'></div> */}
-            <div className='flex justify-between items-start py-4'>
-                <div className=' flex gap-4 '>
+            <div
+                className='absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed bg-white/70'
+                ref={refCardMask}>
+                {' '}
+                {!isExpanded ? (
+                    <button onClick={handleRead} className=''>
+                        <span className='bg-black text-white font-bold p-3 text-center absolute top-4 right-16 skew-x-12 hover:bg-neutral-800 focus:bg-stone-800'>
+                            {' '}
+                            Read more..
+                        </span>
+                    </button>
+                ) : null}{' '}
+            </div>
+            <div className='flex justify-between items-start py-1 mx-1 '>
+                <div className=' flex gap-1 '>
                     <img
                         src={`http://localhost:4300/${author!.avatar}`}
                         className='w-12 h-12 rounded-full object-cover'
@@ -124,7 +159,6 @@ export const PostCard = ({
                             <span className=''>{author!.lastName}</span>
                         </p>
                         <p className=' text-sm text-gray-500'>
-                            Posted on :{' '}
                             <span>{format(date, 'dd/MM/yyyy HH:mm')}</span>
                         </p>
                     </div>
@@ -137,22 +171,16 @@ export const PostCard = ({
                             <RiDeleteBin6Line />
                         </button>
                     ) : null}
-                    {!isExpanded ? (
-                        <button onClick={handleRead} className='w-40'>
-                            {' '}
-                            Read more..
-                        </button>
-                    ) : null}
 
                     {reads!.length ? (
-                        <div className='p-1 text-center bg-green-400 w-40'>
-                            Read
-                        </div>
-                    ) : null}
+                        <MdMarkEmailRead className=' text-2xl text-green-500' />
+                    ) : (
+                        <MdMarkunread className=' text-2xl text-red-500' />
+                    )}
                 </div>
             </div>
-            <div className=' '>
-                <p className='pb-4 border-t-4 pt-4 text-gray-600 truncate'>
+            <div className='px-1 '>
+                <p className='  border-t-4 p-3 text-gray-600 text-elipsis break-words'>
                     {description}
                 </p>
                 <div>

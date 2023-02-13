@@ -12,17 +12,20 @@ export const Share = () => {
     const { currentUser } = useContext(AuthContext)
     const queryClient = useQueryClient()
 
+    //
+    //handlers start
+    //
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setErrorMessage('')
         const formdata = new FormData()
         formdata.append(postRef.current!.name, postRef.current!.value)
         const file = imgRef.current!.files
-        if (!file) {
+        /* if (!file) {
             return console.log('no file')
-        } else {
-            formdata.append(imgRef.current!.name, file[0])
-        }
+        } else { */
+        formdata.append(imgRef.current!.name, file![0])
+        // }
 
         try {
             const savePost = await instance('posts', {
@@ -42,16 +45,21 @@ export const Share = () => {
         }
     }
 
+    //
+    //handlers end
+    //
+
     return (
-        <div className='bg-white px-6 py-6 rounded-lg shadow-xl min-w-[700px]'>
+        <div className='bg-white w-[374px] mx-auto px-1 py-2 rounded-lg shadow-xl md:w-[570px]'>
             {errorMessage ? errorMessage : null}
-            <div className='flex items-center gap-4 mb-8'>
+            <div className='flex items-center gap-4 mb-2'>
                 <img
                     src={`http://localhost:4300/${currentUser?.avatar}`}
-                    className='w-24 h-24 rounded-full object-cover'
+                    className='w-16 h-16 rounded-full object-cover'
                 />
                 <p className=' text-gray-500'>
-                    What's on your mind {currentUser?.firstName}
+                    What's on your mind{' '}
+                    <strong>{currentUser?.firstName}</strong>
                 </p>
             </div>
             <form
@@ -61,8 +69,8 @@ export const Share = () => {
                 <textarea
                     name='description'
                     id='description'
-                    rows={5}
-                    className='border resize-none focus:outline-none rounded-md hover:border-gray-300 focus:border-gray-300'
+                    rows={3}
+                    className='border p-2 overflow-y-scroll resize-none focus:outline-none rounded-md hover:border-gray-300 focus:border-gray-300'
                     ref={postRef}
                     required></textarea>
 
@@ -84,8 +92,8 @@ export const Share = () => {
                 <button
                     type='submit'
                     className='flex w-full justify-center rounded-md border-transparent bg-gradient-to-l from-sky-500 to-indigo-500 
-					py-2 px-4 text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none 
-					 mt-6 shadow-md hover:bg-gradient-to-bl  focus:bg-gradient-to-b'>
+					py-2 px-2 text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none 
+					  shadow-md hover:bg-gradient-to-bl  focus:bg-gradient-to-b'>
                     Post
                 </button>
             </form>

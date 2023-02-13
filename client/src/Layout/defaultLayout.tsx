@@ -3,9 +3,9 @@ import { Header } from '../components'
 
 export const Default = (): JSX.Element => {
     return (
-        <div className='h-screen flex flex-col bg-gray-300 '>
+        <div className=' flex flex-col bg-gradient-to-l from-sky-500 to-indigo-500 w-full min-h-screen'>
             <Header />
-            <main className='grid place-items-center bg-cyan-50 w-full h-full px-8'>
+            <main className='h-full grid place-content-center my-4'>
                 <Outlet />
             </main>
         </div>
