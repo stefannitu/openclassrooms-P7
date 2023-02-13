@@ -1,9 +1,10 @@
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useLocation } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { PostCard } from '../components'
 import { fetchUser, fetchUserPosts } from '../fetch/fetchers'
-import { useContext } from 'react'
+import React, { useContext } from 'react'
 import { AuthContext } from '../context/authContext'
+import { instance } from '../config/axiosConf'
 
 export const Profile = () => {
     //react router state
@@ -12,7 +13,8 @@ export const Profile = () => {
     //
 
     //react  contet api
-    const { currentUser } = useContext(AuthContext)
+    const { currentUser, setIsAuthenticated, isAuthenticated } =
+        useContext(AuthContext)
     const [postsQuery, getUserQuery] = useQueries({
         queries: [
             {
@@ -29,14 +31,26 @@ export const Profile = () => {
     if (postsQuery.isLoading) return <p> Data is loading</p>
     if (getUserQuery.isLoading) return <p> Data is loading</p>
 
-    return (
+    const deleteUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        try {
+            await instance.patch('/users/delete')
+            setIsAuthenticated(false)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    return !isAuthenticated ? (
+        <Navigate to='/login' />
+    ) : (
         <div>
-            <div className='bg-white max-w-[764px] w-full p-5 rounded-lg shadow-lg'>
-                <div className='bg-black '>
+            <div className='bg-white w-[374px] md:w-[570px] p-5 rounded-lg shadow-lg'>
+                <div className='bg-black py-3 '>
                     <img
                         src={`http://localhost:4300/${getUserQuery.data.user.avatar}`}
                         alt='avatar'
-                        className=' w-36 h-36 rounded-full bg-white mx-auto'
+                        className=' w-32 h-32 rounded-full bg-white mx-auto object-cover'
                     />
                 </div>
                 <div className='grid place-content-center py-3 px-5'>
@@ -54,7 +68,7 @@ export const Profile = () => {
                     </p>
                     {currentUser?.userId == userId ? (
                         <button
-                            type='submit'
+                            onClick={deleteUser}
                             className='flex w-full justify-center rounded-md border-transparent bg-gradient-to-l from-sky-500 to-indigo-500 
 					py-2 px-4 text-lg font-medium text-white hover:bg-indigo-700 focus:outline-none 
 					 mt-6 shadow-md hover:bg-gradient-to-bl  focus:bg-gradient-to-b'>

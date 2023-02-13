@@ -110,9 +110,6 @@ export const getUserPosts = async (req: Request, res: Response) => {
             where: {
                 deleted: false,
                 ownerId: userId,
-                /*    reads: {
-                    none: {},
-                }, */
             },
             include: {
                 author: true,

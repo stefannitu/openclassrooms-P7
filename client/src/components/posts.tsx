@@ -46,12 +46,18 @@ export const Posts = () => {
     }
     return (
         <div className=' w-full'>
-            <select name='readStatus' onChange={handleReadStatus}>
-                <option value='all'>All</option>
-                <option value='read'>Read</option>
-                <option value='unread'>Unread</option>
-            </select>
-
+            <div className='p-2 my-2 bg-black  text-white'>
+                <label htmlFor='readStatus'> Filter data by status: </label>
+                <select
+                    id='readStatus'
+                    name='readStatus'
+                    className='text-black tracking-wide '
+                    onChange={handleReadStatus}>
+                    <option value='all'>All</option>
+                    <option value='read'>Read</option>
+                    <option value='unread'>Unread</option>
+                </select>
+            </div>
             <ul>
                 {newData &&
                     newData
