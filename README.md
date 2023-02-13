@@ -1,7 +1,11 @@
 # OpenClassRooms Project 7*
 
+GitHub - link
+[Github project 7](https://github.com/stefannitu/openclassrooms-P7.git)
+
+
 API - diagram
-[Figma] (https://www.figma.com/file/yTFBDUU0AVF8JKRTUo7qmS/Untitled?node-id=0%3A1&t=sJHDXUhjbvbJnhWt-1)
+[Figma](https://www.figma.com/file/yTFBDUU0AVF8JKRTUo7qmS/Untitled?node-id=0%3A1&t=sJHDXUhjbvbJnhWt-1)
 
 
 ## Install quide:
