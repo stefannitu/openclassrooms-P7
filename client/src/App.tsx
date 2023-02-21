@@ -22,11 +22,11 @@ function App() {
         {
             path: '/',
             element: (
-                <ProtectedRoute>
-                    <QueryClientProvider client={queryClient}>
+                <QueryClientProvider client={queryClient}>
+                    <ProtectedRoute>
                         <Default />
-                    </QueryClientProvider>
-                </ProtectedRoute>
+                    </ProtectedRoute>
+                </QueryClientProvider>
             ),
             children: [
                 {

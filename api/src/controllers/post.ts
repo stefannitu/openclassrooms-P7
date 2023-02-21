@@ -1,7 +1,5 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '../config/prisma'
 
 export const savePost = async (req: Request, res: Response) => {
     const { description } = req.body
@@ -102,8 +100,6 @@ export const readPost = async (req: Request, res: Response) => {
 
 export const getUserPosts = async (req: Request, res: Response) => {
     const userId = req.params.userId
-
-    // const page = req.query.page
 
     try {
         const posts = await prisma.posts.findMany({

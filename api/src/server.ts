@@ -3,6 +3,7 @@ import cors from 'cors'
 import session from 'express-session'
 import Redis from 'ioredis'
 import connectRedis from 'connect-redis'
+import helmet from 'helmet'
 
 import {
     authRoutes,
@@ -25,6 +26,12 @@ export const redisClient = new Redis(REDIS_OPTIONS)
 //
 //middlewares
 //
+
+app.use(
+    helmet({
+        crossOriginResourcePolicy: false,
+    })
+)
 app.use(
     cors({
         origin: 'http://localhost:5173',

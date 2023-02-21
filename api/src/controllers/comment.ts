@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../config/prisma'
+
 export const addComment = async (req: Request, res: Response) => {
-    const prisma = new PrismaClient()
     const { description, postId } = req.body
 
     if (!description || !postId || !req.session.userId) {
@@ -23,7 +23,6 @@ export const addComment = async (req: Request, res: Response) => {
 }
 
 export const getComment = async (req: Request, res: Response) => {
-    const prisma = new PrismaClient()
     const postId = req.params.postId
     const comments = await prisma.comments.findMany({
         where: {

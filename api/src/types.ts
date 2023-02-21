@@ -5,3 +5,14 @@ export type RegisterUserType = {
     lastName: string
     avatar?: any
 }
+
+//for SessionData
+declare module 'express-session' {
+    interface SessionData {
+        userId: string
+        email: string
+        firstName: string
+        lastName: string
+        avatar: string
+    }
+}

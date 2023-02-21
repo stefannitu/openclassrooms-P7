@@ -1,6 +1,5 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../config/prisma'
 import { Request, Response } from 'express'
-const prisma = new PrismaClient()
 
 export const saveLike = async (req: Request, res: Response) => {
     const { postId, likes } = req.body

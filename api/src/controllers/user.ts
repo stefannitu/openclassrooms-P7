@@ -1,22 +1,19 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '../config/prisma'
 
 //if is not sign in  go to next route
 
 export const hasCookie = (req: Request, res: Response) => {
     if (req.session.userId) {
         const user = {
-            userId: req.session.userId,
-            userEmail: req.session.email,
-            userFirstName: req.session.firstName,
-            userLastName: req.session.lastName,
-            userAvatar: req.session.avatar,
+            id: req.session.userId,
+            email: req.session.email,
+            firstName: req.session.firstName,
+            lastName: req.session.lastName,
+            avatar: req.session.avatar,
         }
 
         return res.status(200).json({ user })
-        // return res.status(200).json({ message: 'User already logged in' })
     }
     return res.status(401).json({ message: 'Authorization required' })
 }
