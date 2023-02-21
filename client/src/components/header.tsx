@@ -36,12 +36,14 @@ export const Header = () => {
 
     return (
         <header className=' bg-black text-white'>
-            <div className=' flex items-center  flex-col mx-auto max-w-[354px] gap-3 py-4 px-1'>
-                <div className=' mr-auto'>
-                    <Link to='/'>
-                        <img src='./src/assets/groupomaniaLogo/icon-left-font-monochrome-white.svg' />
-                    </Link>
-                </div>
+            <div className=' flex items-center  flex-col mx-auto w-[374px] gap-3 py-4 px-1 md:w-screen md:flex-row md:justify-between md:px-14'>
+                <Link to='/'>
+                    <img
+                        src='./src/assets/groupomaniaLogo/icon-left-font-monochrome-white.svg'
+                        className='max-w-[300px] '
+                    />
+                </Link>
+
                 {isAuthenticated ? (
                     <nav>
                         <ul className='flex items-center gap-4 '>

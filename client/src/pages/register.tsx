@@ -90,8 +90,8 @@ export const Register = () => {
                             name='firstName'
                             autoFocus
                             autoCapitalize='on'
-                            minLength={4}
-                            maxLength={10}
+                            minLength={3}
+                            maxLength={20}
                             required
                             className='custom-input peer'
                             ref={refFn}
@@ -110,8 +110,8 @@ export const Register = () => {
                             type='text'
                             id='lastName'
                             name='lastName'
-                            minLength={4}
-                            maxLength={10}
+                            minLength={3}
+                            maxLength={20}
                             required
                             className='custom-input peer'
                             ref={refLn}

@@ -1,22 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
-import { Prisma, PrismaClient } from '@prisma/client'
+import { Prisma } from '@prisma/client'
+import { prisma } from '../config/prisma'
 
 import { RegisterUserType } from '../types'
-
-//for SessionData
-declare module 'express-session' {
-    interface SessionData {
-        userId: string
-        email: string
-        firstName: string
-        lastName: string
-        avatar: string
-    }
-}
-
-//PRISMA
-const prisma = new PrismaClient()
 
 //////////
 //REGISTER controller
@@ -71,11 +58,7 @@ export const register = async (req: Request, res: Response) => {
 //LOGIN controller
 ///////
 
-export const login = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const login = async (req: Request, res: Response) => {
     const { email, password }: RegisterUserType = req.body
 
     try {
@@ -118,11 +101,7 @@ export const login = async (
     }
 }
 
-export const logout = async (req: Request, res: Response) => {
-    /*   if (!req.session.userId) {
-        return res.status(400).json({ message: 'There is no cookie' })
-    }
- */
+export const logout = (req: Request, res: Response) => {
     //session destroy remove cookie from redis
     //res.clearCookie remove cookie from browser
     req.session.destroy(function (err) {

@@ -41,9 +41,9 @@ export const Profile = () => {
         }
     }
 
-    return !isAuthenticated ? (
+    /*   return !isAuthenticated ? (
         <Navigate to='/login' />
-    ) : (
+    ) : */ return (
         <div>
             <div className='bg-white w-[374px] md:w-[570px] p-5 rounded-lg shadow-lg'>
                 <div className='bg-black py-3 '>

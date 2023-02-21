@@ -6,7 +6,7 @@ import { AuthContext } from '../context/authContext'
 
 export const Posts = () => {
     const [newData, setNewData] = useState([])
-    const { currentUser } = useContext(AuthContext)
+    const { setIsAuthenticated } = useContext(AuthContext)
 
     const { status, data } = useQuery({
         queryKey: ['posts'],
@@ -14,6 +14,9 @@ export const Posts = () => {
 
         onSuccess: (data) => {
             setNewData(data)
+        },
+        onError: () => {
+            setIsAuthenticated(false)
         },
         // keepPreviousData: true,
     })
